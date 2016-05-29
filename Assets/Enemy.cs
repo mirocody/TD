@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour {
 		}
 		else {
 			targetPathNode = null;
-			ReachedGoal();
+			//ReachedGoal();
 		}
 	}
 	
