@@ -2,9 +2,11 @@
 using System.Collections;
 
 public class TowerSpot : MonoBehaviour {
+	public GameObject tower;
 
 	void OnMouseUp() {
 		Debug.Log("TowerSpot clicked.");
+		Instantiate(tower, transform.parent.position, transform.parent.rotation);
 
 		BuildingManager bm = GameObject.FindObjectOfType<BuildingManager>();
 		if(bm.selectedTower != null) {
@@ -17,7 +19,8 @@ public class TowerSpot : MonoBehaviour {
 			sm.money -= bm.selectedTower.GetComponent<Tower>().cost;
 
 			// FIXME: Right now we assume that we're an object nested in a parent.
-			Instantiate(bm.selectedTower, transform.parent.position, transform.parent.rotation);
+			//GameObject temp = GameObject.FindObjectOfType<Tower>();
+			Instantiate(tower, transform.parent.position, transform.parent.rotation);
 			Destroy(transform.parent.gameObject);
 		}
 	}

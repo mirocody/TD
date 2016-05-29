@@ -26,8 +26,8 @@ public class ScoreManager : MonoBehaviour {
 
 	void Update() {
 		// FIXME: This doesn't actually need to update the text every frame.
-		moneyText.text = "Money: $" + money.ToString();
-		livesText.text = "Lives: "  + lives.ToString();
+//		moneyText.text = "Money: $" + money.ToString();
+//		livesText.text = "Lives: "  + lives.ToString();
 
 
 	}
