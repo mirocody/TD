@@ -10,9 +10,10 @@ public class Enemy : MonoBehaviour {
 
 	float speed = 5f;
 
-	public float health = 1f;
+	public float enemyhealth = 1f;
+	public int enemygold = 10;
+	public int enemyscore = 3;
 
-	public int moneyValue = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -29,7 +30,7 @@ public class Enemy : MonoBehaviour {
 			//ReachedGoal();
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if(targetPathNode == null) {
@@ -66,15 +67,16 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void TakeDamage(float damage) {
-		health -= damage;
-		if(health <= 0) {
+		enemyhealth -= damage;
+		if(enemyhealth <= 0) {
 			Die();
 		}
 	}
 
 	public void Die() {
 		// TODO: Do this more safely!
-		GameObject.FindObjectOfType<ScoreManager>().money += moneyValue;
+		GameObject.FindObjectOfType<ScoreManager>().score += 1; //+enemyscore
+		GameObject.FindObjectOfType<GoldManager>().gold += 3; //+enemygold
 		Destroy(gameObject);
 	}
 }

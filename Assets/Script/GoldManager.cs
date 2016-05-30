@@ -4,9 +4,7 @@ using System.Collections;
 
 public class GoldManager : MonoBehaviour
 {
-    public static int gold;
-
-
+    public  int gold;
     Text text;
 
 
@@ -19,6 +17,6 @@ public class GoldManager : MonoBehaviour
 
     void Update()
     {
-        text.text = "Gold: " + gold;
+      text.text = "Gold: $" + gold.ToString();
     }
 }
