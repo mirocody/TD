@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class ScoreManager: MonoBehaviour
 {
-    public int score;
-    public int lives;
+    public static int score;
+    public static int lives;
     Text text;
 
 
