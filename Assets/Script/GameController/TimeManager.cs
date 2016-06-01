@@ -8,28 +8,28 @@ public class TimeManager : MonoBehaviour {
     public Text text;
     bool isOver;
     public int curWave;
-    public int timer;
+    public static int timer;
     void Awake()
     {
         text = GetComponent<Text>();
-        fixedtime=10;
+        fixedtime=20;
         timer = fixedtime;
         isOver = false;
         curWave = WaveManager.wave;
         InvokeRepeating("CountDown",0,1);
     }
 
-/*
+
 	void Update () {
         if (WaveManager.wave != curWave)
         {
-            fixedtime = 60;
+            timer = fixedtime;
             isOver = false;
             curWave = WaveManager.wave;
             text.text = "TIME: 1:00";
         }
 	}
-*/
+
 
 
     void CountDown()
@@ -45,12 +45,12 @@ public class TimeManager : MonoBehaviour {
                 isOver = true;
             }
         }
-        else{
+        /*else{
 
           timer=fixedtime;
           WaveManager.wave++;
           curWave++;
           isOver=false;
-        }
+        }*/
     }
 }
