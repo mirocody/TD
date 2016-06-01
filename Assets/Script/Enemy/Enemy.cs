@@ -74,8 +74,8 @@ public class Enemy : MonoBehaviour {
 
 	public void Die() {
 		// TODO: Do this more safely!
-		GameObject.FindObjectOfType<ScoreManager>().score += 1; //+enemyscore
-		GameObject.FindObjectOfType<GoldManager>().gold += 3; //+enemygold
+		ScoreManager.score += 1; //+enemyscore
+		GoldManager.gold += 3; //+enemygold
 		Destroy(gameObject);
 	}
 }
