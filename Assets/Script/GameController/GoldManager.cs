@@ -11,7 +11,7 @@ public class GoldManager : MonoBehaviour
     void Awake()
     {
         text = GetComponent<Text>();
-        //gold = 0;
+        gold = 100;
     }
 
 

@@ -13,8 +13,8 @@ public class WaveManager : MonoBehaviour
     void Awake()
     {
         text = GetComponent<Text>();
-        wave = 10;
-        InvokeRepeating("CountDown", 30, 30);
+        wave = 0;
+      //  InvokeRepeating("CountDown", TimeManager., 30);
     }
 
 
@@ -23,8 +23,4 @@ public class WaveManager : MonoBehaviour
         text.text = "WAVE: " + wave;
     }
 
-    void CountDown()
-    {
-        wave--;
-    }
 }
