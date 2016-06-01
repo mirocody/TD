@@ -27,7 +27,7 @@ public class TowerSpot : MonoBehaviour {
 		if (tsPanelScript.selectedTower) {
 			tsPanelTrans.gameObject.SetActive (false);
 			if (CanBuildTower ()) {
-				gm.gold -= tsPanelScript.selectedTower.GetComponent<TowerData> ().cost;
+				GoldManager.gold -= tsPanelScript.selectedTower.GetComponent<TowerData> ().cost;
 				Debug.Log ("Tower created");
 				tower = (GameObject)Instantiate (tsPanelScript.selectedTower, transform.position, transform.rotation);
 				//Destroy (transform.parent.gameObject);
@@ -39,7 +39,7 @@ public class TowerSpot : MonoBehaviour {
 	bool CanBuildTower()
 	{
 		if (tower == null) {
-			if (gm.gold >= tsPanelScript.selectedTower.GetComponent<TowerData> ().cost) {
+			if (GoldManager.gold >= tsPanelScript.selectedTower.GetComponent<TowerData> ().cost) {
 				Debug.Log ("Have enough money!");
 				return true;
 			}		
