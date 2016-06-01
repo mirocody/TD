@@ -4,11 +4,11 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class TimeManager : MonoBehaviour {
-    public static int fixedtime;
+    public  int fixedtime;
     public Text text;
     bool isOver;
     public int curWave;
-	
+
     void Awake()
     {
         text = GetComponent<Text>();
@@ -18,7 +18,7 @@ public class TimeManager : MonoBehaviour {
         InvokeRepeating("CountDown",0,1);
     }
 
-	
+
 	void Update () {
         if (WaveManager.wave != curWave)
         {

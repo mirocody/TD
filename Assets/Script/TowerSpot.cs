@@ -10,13 +10,13 @@ public class TowerSpot : MonoBehaviour {
 
 		BuildingManager bm = GameObject.FindObjectOfType<BuildingManager>();
 		if(bm.selectedTower != null) {
-			ScoreManager sm = GameObject.FindObjectOfType<ScoreManager>();
-			if(sm.money < bm.selectedTower.GetComponent<Tower>().cost) {
+			GoldManager sm = GameObject.FindObjectOfType<GoldManager>();
+			if(sm.gold < bm.selectedTower.GetComponent<Tower>().cost) {
 				Debug.Log("Not enough money!");
 				return;
 			}
 
-			sm.money -= bm.selectedTower.GetComponent<Tower>().cost;
+			sm.gold -= bm.selectedTower.GetComponent<Tower>().cost;
 
 			// FIXME: Right now we assume that we're an object nested in a parent.
 			//GameObject temp = GameObject.FindObjectOfType<Tower>();
