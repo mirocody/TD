@@ -62,6 +62,7 @@ public class Enemy : MonoBehaviour {
 
 	void ReachedGoal() {
 		GameObject.FindObjectOfType<ScoreManager>().LoseLife();
+        SpawnerManager.stillAlive--;
 		Destroy(gameObject);
 	}
 
@@ -76,6 +77,7 @@ public class Enemy : MonoBehaviour {
 		// TODO: Do this more safely!
 		ScoreManager.score += 1; //+enemyscore
 		GoldManager.gold += 3; //+enemygold
+        SpawnerManager.stillAlive--;
 		Destroy(gameObject);
 	}
 }
