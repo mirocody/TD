@@ -10,6 +10,7 @@ public class control_script : MonoBehaviour {
 	void Awake ()
 	{
 		anim = GetComponentInChildren<Animator>();
+		Run ();
 	}
 
 	public void Walk ()

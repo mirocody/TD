@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{FFE83FE9-913E-4C7F-E5AE-2C97DBB071B8}</ProjectGuid>
+    <ProjectGuid>{389BCB1D-BC42-2720-10BA-5A9ECD9DC1CF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -47,20 +47,20 @@
   <ItemGroup>
      <Compile Include="Assets\Chibi Mummy\Scripts\anims_controls.cs" />
      <Compile Include="Assets\Chibi Mummy\Scripts\control_script.cs" />
-     <Compile Include="Assets\Script\BuildingManager.cs" />
-     <Compile Include="Assets\Script\Bullet.cs" />
-     <Compile Include="Assets\Script\Enemy.cs" />
-     <Compile Include="Assets\Script\EnemySpawner.cs" />
-     <Compile Include="Assets\Script\EnhancementAttack.cs" />
-     <Compile Include="Assets\Script\GoldManager.cs" />
-     <Compile Include="Assets\Script\HPManager.cs" />
-     <Compile Include="Assets\Script\PathNode.cs" />
-     <Compile Include="Assets\Script\ScoreManager.cs" />
-     <Compile Include="Assets\Script\ShootEnemies.cs" />
-     <Compile Include="Assets\Script\TimeManager.cs" />
-     <Compile Include="Assets\Script\Tower.cs" />
-     <Compile Include="Assets\Script\TowerSpot.cs" />
-     <Compile Include="Assets\Script\WaveManager.cs" />
+     <Compile Include="Assets\Script\Enemy\Enemy.cs" />
+     <Compile Include="Assets\Script\Enemy\EnemySpawner.cs" />
+     <Compile Include="Assets\Script\GameController\GoldManager.cs" />
+     <Compile Include="Assets\Script\GameController\HPManager.cs" />
+     <Compile Include="Assets\Script\GameController\ScoreManager.cs" />
+     <Compile Include="Assets\Script\GameController\TimeManager.cs" />
+     <Compile Include="Assets\Script\GameController\WaveManager.cs" />
+     <Compile Include="Assets\Script\Tower\AttackENH.cs" />
+     <Compile Include="Assets\Script\Tower\AttackEnemies.cs" />
+     <Compile Include="Assets\Script\Tower\AttackStrategies.cs" />
+     <Compile Include="Assets\Script\Tower\TowerData.cs" />
+     <Compile Include="Assets\Script\TowerBuilding\TowerSelectionPanel.cs" />
+     <Compile Include="Assets\Script\TowerBuilding\TowerSpot.cs" />
+     <Compile Include="Assets\Script\Weapon\Bullet.cs" />
      <None Include="Assets\Fonts\LuckiestGuy\LICENSE.txt" />
      <None Include="Assets\Chibi Mummy\readme.txt" />
  <Reference Include="UnityEngine.Networking">
