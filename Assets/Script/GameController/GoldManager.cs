@@ -4,14 +4,14 @@ using System.Collections;
 
 public class GoldManager : MonoBehaviour
 {
-    public static int gold;
+    public int gold;
     Text text;
 
 
     void Awake()
     {
         text = GetComponent<Text>();
-        gold = 100;
+        //gold = 0;
     }
 
 

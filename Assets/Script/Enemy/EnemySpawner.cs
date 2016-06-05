@@ -5,7 +5,6 @@ public class EnemySpawner : MonoBehaviour {
 
 	float spawnCD = 0.5f;
 	float spawnCDremaining = 2.5f;
-    public int creepSum;
 
 	[System.Serializable]
 	public class WaveComponent {
@@ -19,14 +18,8 @@ public class EnemySpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        creepSum = 0;
-        foreach (WaveComponent wc in waveComps)
-        {
-            creepSum += wc.num;
-        }
-        SpawnerManager.stillAlive += creepSum;
-
-    }
+	
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -49,10 +42,19 @@ public class EnemySpawner : MonoBehaviour {
 			}
 
 			if(didSpawn == false) {
-                // Wave must be complete!
-                // TODO: Instantiate next wave object!
+				// Wave must be complete!
+				// TODO: Instantiate next wave object!
 
-                SpawnerManager.curSpawner--;
+				if(transform.parent.childCount > 1) {
+					transform.parent.GetChild(1).gameObject.SetActive(true);
+				}
+				else {
+					// That was the last wave -- what do we want to do?
+					// What if instead of DESTROYING wave objects,
+					// we just made them inactive, and then when we run
+					// out of waves, we restart at the first one,
+					// but double all enemy HPs or something?
+				}
 
 				Destroy(gameObject);
 			}

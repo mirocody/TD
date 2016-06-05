@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour {
 	public int enemygold = 10;
 	public int enemyscore = 3;
 	public float enemyspeed = 2.5f;
+	public float enemyspeed2 = 2.5f;
 
 
 	// Use this for initialization
@@ -62,7 +63,6 @@ public class Enemy : MonoBehaviour {
 
 	void ReachedGoal() {
 		GameObject.FindObjectOfType<ScoreManager>().LoseLife();
-        SpawnerManager.stillAlive--;
 		Destroy(gameObject);
 	}
 
@@ -75,9 +75,8 @@ public class Enemy : MonoBehaviour {
 
 	public void Die() {
 		// TODO: Do this more safely!
-		ScoreManager.score += 1; //+enemyscore
-		GoldManager.gold += 3; //+enemygold
-        SpawnerManager.stillAlive--;
+		GameObject.FindObjectOfType<ScoreManager>().score += 1; //+enemyscore
+		GameObject.FindObjectOfType<GoldManager>().gold += 3; //+enemygold
 		Destroy(gameObject);
 	}
 }
