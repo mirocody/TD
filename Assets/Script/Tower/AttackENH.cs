@@ -35,22 +35,22 @@ public class AttackENH : MonoBehaviour {
 
 	void OnMouseUpAsButton()
 	{
-		Debug.Log("Click the tower to attack!");
+		Debug.Log ("Tap the tower to trigger enhanced attack!");
 
-		if(attackStrategy.targetEnemy == null) {
-			Debug.Log("No enemies?");
+		if (attackStrategy.targetEnemy == null) {
+			Debug.Log ("No enemies?");
 			return;
 		}
 
 		// Turn to the target enemy
 		Vector3 relativePos = attackStrategy.targetEnemy.position - this.transform.position;
 		Vector3 aimPoint = relativePos + new Vector3 (aimError, aimError, aimError);
-		Quaternion desiredRotation = Quaternion.LookRotation( aimPoint );
-		towerBody.rotation = Quaternion.Lerp(towerBody.rotation, desiredRotation, Time.deltaTime * towerData.turnSpeed);
+		Quaternion desiredRotation = Quaternion.LookRotation (aimPoint);
+		towerBody.rotation = Quaternion.Lerp (towerBody.rotation, desiredRotation, Time.deltaTime * towerData.turnSpeed);
 
 		// Attack target enemy
 		if (isEnergyFull && relativePos.magnitude <= towerData.range) {
-			AttackAt(attackStrategy.targetEnemy);
+			AttackAt (attackStrategy.targetEnemy);
 			isEnergyFull = false;
 			nextAttackTime = Time.time + towerData.rechargeRate;
 		}

@@ -3,16 +3,15 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-	GameObject pathGO;
-
-	Transform targetPathNode;
-	int pathNodeIndex = 0;
-
 	public float enemyhealth = 1f;
 	public int enemygold = 10;
 	public int enemyscore = 3;
 	public float enemyspeed = 2.5f;
 
+	GameObject pathGO;
+	Transform targetPathNode;
+	int pathNodeIndex = 0;
+	float pathNodeOffset = 2.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -41,11 +40,12 @@ public class Enemy : MonoBehaviour {
 			}
 		}
 
-		Vector3 dir = targetPathNode.position - this.transform.localPosition;
+		Vector3 offset = new Vector3(Random.Range(-pathNodeOffset, pathNodeOffset), 0, Random.Range(-pathNodeOffset, pathNodeOffset));
+		Vector3 dir = targetPathNode.position - this.transform.localPosition + offset;
 
 		float distThisFrame = enemyspeed * Time.deltaTime;
 
-		if(dir.magnitude <= distThisFrame) {
+		if(dir.magnitude <= distThisFrame + pathNodeOffset) {
 			// We reached the node
 			targetPathNode = null;
 		}
@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour {
 			// Move towards node
 			transform.Translate( dir.normalized * distThisFrame, Space.World );
 			Quaternion targetRotation = Quaternion.LookRotation( dir );
-			this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.deltaTime*5);
+			this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.deltaTime*Random.Range(5,10));
 		}
 
 	}
