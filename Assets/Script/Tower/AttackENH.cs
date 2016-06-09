@@ -15,8 +15,8 @@ public class AttackENH : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		towerData = transform.parent.gameObject.GetComponent<TowerData> ();
-		attackStrategy = transform.parent.gameObject.GetComponent<AttackStrategies> ();
+		towerData = GetComponent<TowerData> ();
+		attackStrategy = GetComponent<AttackStrategies> ();
 		nextAttackTime = Time.time + towerData.rechargeRate;
 	}
 	
