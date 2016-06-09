@@ -26,10 +26,10 @@ public class AttackENH : MonoBehaviour {
 			isEnergyFull = true;
 		}
 		if (isEnergyFull) {
-			transform.GetComponent<Renderer> ().material.SetColor ("_Color", Color.red);
+			//transform.GetComponent<Renderer> ().material.SetColor ("_Color", Color.red);
 		}
 		if (!isEnergyFull) {
-			transform.GetComponent<Renderer> ().material.SetColor ("_Color", Color.gray);
+			//transform.GetComponent<Renderer> ().material.SetColor ("_Color", Color.gray);
 		}
 	}
 
