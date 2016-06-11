@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Bullet : MonoBehaviour {
+public class Projectile : MonoBehaviour {
 
 	[HideInInspector]
 	public Transform target;
@@ -9,10 +9,12 @@ public class Bullet : MonoBehaviour {
 	public float speed = 15f;
 	public float damage = 1f;
 	public float radius = 0;
+	public int level = 0;
+	public char type;
 
 	// Use this for initialization
 	void Start () {
-	
+		damage = Mathf.Pow (2, level - 1) * damage;
 	}
 	
 	// Update is called once per frame
@@ -23,7 +25,6 @@ public class Bullet : MonoBehaviour {
 			return;
 		}
 
-
 		Vector3 dir = target.position - this.transform.localPosition;
 
 		float distThisFrame = speed * Time.deltaTime;
@@ -33,8 +34,6 @@ public class Bullet : MonoBehaviour {
 			DoBulletHit();
 		}
 		else {
-			// TODO: Consider ways to smooth this motion.
-
 			// Move towards node
 			transform.Translate( dir.normalized * distThisFrame, Space.World );
 			Quaternion targetRotation = Quaternion.LookRotation( dir );
@@ -44,12 +43,12 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void DoBulletHit() {
-		// TODO:  What if it's an exploding bullet with an area of effect?
-
 		if(radius == 0) {
-			target.GetComponent<Enemy>().TakeDamage(damage);
+			//target.GetComponent<Enemy>().TakeDamage(damage);
+			//target.GetComponent<Enemy>().TakeDamage(type, level, damage);
+			//damage = Mathf.Pow (2, level - 1) * damage;
+			target.GetComponent<Enemy>().TakeDamage(damage, type);
 			Debug.Log ("Normal Attack takes " + damage.ToString() + " damage!");
-
 		}
 		else {
 			Collider[] cols = Physics.OverlapSphere(transform.position, radius);
@@ -58,14 +57,16 @@ public class Bullet : MonoBehaviour {
 				Enemy e = c.GetComponent<Enemy>();
 				if(e != null) {
 					// TODO: You COULD do a falloff of damage based on distance, but that's rare for TD games
-					e.GetComponent<Enemy>().TakeDamage(damage);
+					//e.GetComponent<Enemy>().TakeDamage(damage);
+					//e.GetComponent<Enemy>().TakeDamage(type, level, damage);
+					//damage = Mathf.Pow (2, level - 1) * damage;
+					target.GetComponent<Enemy>().TakeDamage(damage, type);
 					Debug.Log ("Enhanced Attack takes " + damage.ToString() + " damage!");
 				}
 			}
 		}
 
 		// TODO: Maybe spawn a cool "explosion" object here?
-
 		Destroy(gameObject);
 	}
 }
