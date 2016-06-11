@@ -14,6 +14,8 @@ public class TowerSpotTouch : MonoBehaviour {
 	public Vector2 touchPos;
 	[HideInInspector]
 	public bool isTowerSpotTapped;
+    public bool isBlank;
+    public bool isSelectionPanel;
 
 	private int layerMask;
 	private int layerMaskUI;
@@ -21,6 +23,8 @@ public class TowerSpotTouch : MonoBehaviour {
 
 	void Start()
 	{
+        isBlank = true;
+        isSelectionPanel = false;
 		layerMask = LayerMask.GetMask (layerMaskName);
 		layerMaskUI = LayerMask.GetMask ("UI");
 	}
@@ -29,25 +33,30 @@ public class TowerSpotTouch : MonoBehaviour {
 	{
 		RaycastHit hit;	
 
-		if (Input.touchCount == 1) {
-			Ray camRay = Camera.main.ScreenPointToRay (Input.GetTouch (0).position);
+		//if (Input.touchCount==1)
+        if(Input.GetMouseButtonDown(0))
+        {
+			Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
 			if (Physics.Raycast(camRay, out hit, camRayLength, layerMaskUI)) {
-				// Return if raycast hits UI layer 
+                // Return if raycast hits UI layer
 				return;	
 			}
 			if (Physics.Raycast (camRay, out hit, camRayLength, layerMask)) {
 				// Get collider name, hit point and touch position if a tower spot was tapped
 				if (towerSpotTag == hit.collider.tag) {
 					isTowerSpotTapped = true;
+                    isBlank = false;
 					hitColliderName = hit.collider.name;
 					hitPoint = hit.point;
-					touchPos = Input.GetTouch (0).position;
+					touchPos = Camera.main.WorldToScreenPoint( hit.transform.position);
 					Debug.Log ("In TowerSpotTouch.cs, the hitColliderName is: " + hitColliderName);
 					return;
 				}
 			}
-		}
-		isTowerSpotTapped = false;
+            Debug.Log("Did not hit anything!");
+            isBlank = true;
+        }
+        isTowerSpotTapped = false;
 		//hitColliderName = "";
 	}
 }
