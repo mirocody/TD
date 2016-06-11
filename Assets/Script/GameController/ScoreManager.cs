@@ -26,12 +26,15 @@ public class ScoreManager: MonoBehaviour
 
     public void GameOver() {
       Debug.Log("Game Over");
-      // TODO: Send the player to a game-over screen instead!
-      SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // TODO: Send the player to a game-over screen instead!
+        Transform temp = transform.parent.Find("GameOverPanel");
+        temp.gameObject.SetActive(true);
+        temp.Find("ScoreText").GetComponent<Text>().text= "SCORE: " + score;
+        Time.timeScale = 0;
     }
 
     void Update()
     {
-      text.text = "SCORE: " + score.ToString();
+      text.text = score.ToString();
     }
 }

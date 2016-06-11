@@ -17,6 +17,6 @@ public class HPManager : MonoBehaviour
 
     void Update()
     {
-        text.text = "HP: " + hp;
+        text.text = hp.ToString();
     }
 }
