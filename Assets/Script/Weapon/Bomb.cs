@@ -8,10 +8,12 @@ public class Bomb : MonoBehaviour {
 
 	public float damage = 5.0f;
 	public float radius = 10.0f;
+	private char element;
+
 
 	// Use this for initialization
 	void Start () {
-	
+		element='f';	
 	}
 	
 	// Update is called once per frame
@@ -22,7 +24,7 @@ public class Bomb : MonoBehaviour {
 			Enemy e = c.GetComponent<Enemy>();
 			if(e != null) {
 				// TODO: You COULD do a falloff of damage based on distance, but that's rare for TD games
-				e.GetComponent<Enemy>().TakeDamage(damage);
+				e.GetComponent<Enemy>().TakeDamage(damage,element);
 				Debug.Log ("Boom Explosion takes " + damage.ToString() + " damage!");
 			}
 		}

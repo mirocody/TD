@@ -20,7 +20,7 @@ public class WaveManager : MonoBehaviour
 
     void Update()
     {
-        text.text = "WAVE: " + wave;
+        text.text = wave.ToString();
     }
 
 }

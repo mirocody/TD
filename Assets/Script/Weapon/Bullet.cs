@@ -9,10 +9,11 @@ public class Bullet : MonoBehaviour {
 	public float speed = 15f;
 	public float damage = 1f;
 	public float radius = 0;
+	private char element;
 
 	// Use this for initialization
 	void Start () {
-	
+		element = 'f';
 	}
 	
 	// Update is called once per frame
@@ -47,7 +48,7 @@ public class Bullet : MonoBehaviour {
 		// TODO:  What if it's an exploding bullet with an area of effect?
 
 		if(radius == 0) {
-			target.GetComponent<Enemy>().TakeDamage(damage);
+			target.GetComponent<Enemy>().TakeDamage(damage,element);
 			Debug.Log ("Normal Attack takes " + damage.ToString() + " damage!");
 
 		}
@@ -58,7 +59,7 @@ public class Bullet : MonoBehaviour {
 				Enemy e = c.GetComponent<Enemy>();
 				if(e != null) {
 					// TODO: You COULD do a falloff of damage based on distance, but that's rare for TD games
-					e.GetComponent<Enemy>().TakeDamage(damage);
+					e.GetComponent<Enemy>().TakeDamage(damage,element);
 					Debug.Log ("Enhanced Attack takes " + damage.ToString() + " damage!");
 				}
 			}

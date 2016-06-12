@@ -3,8 +3,8 @@ using System.Collections;
 
 public class EnemySpawner : MonoBehaviour {
 
-	float spawnCD = 0.5f;
-	float spawnCDremaining = 2.5f;
+	float spawnCD = 2.5f;
+	float spawnCDremaining = 10f;
     public int creepSum;
 	[System.Serializable]
 	public class WaveComponent {
@@ -12,13 +12,13 @@ public class EnemySpawner : MonoBehaviour {
 		public int num;
 		public float spawnInterval;
 		[System.NonSerialized]
-		public int spawned = 0;
+		public int spawned = 1;
 	}
 
 	public WaveComponent[] waveComps;
 
 	//float spawnCD = 0.75f;
-	float nextSpawnRemaining = 2.5f;
+	float nextSpawnRemaining = 0.5f;
 	float spawnSpotOffset = 2.0f;
 
 	// Use this for initialization
