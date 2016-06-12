@@ -15,7 +15,7 @@ public class SpawnerManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (WaveManager.wave < 11)
+        if (WaveManager.wave < 5)
         {
             if (isStart || TimeManager.timer == 0||stillAlive==0)
             {
