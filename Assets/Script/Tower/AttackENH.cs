@@ -22,15 +22,7 @@ public class AttackENH : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Time.time >= nextAttackTime) {
-			isEnergyFull = true;
-		}
-		if (isEnergyFull) {
-			transform.GetComponent<Renderer> ().material.SetColor ("_Color", Color.red);
-		}
-		if (!isEnergyFull) {
-			transform.GetComponent<Renderer> ().material.SetColor ("_Color", Color.gray);
-		}
+		
 	}
 
 	void OnMouseUpAsButton()
