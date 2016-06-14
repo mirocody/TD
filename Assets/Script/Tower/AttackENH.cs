@@ -15,8 +15,8 @@ public class AttackENH : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		towerData = GetComponent<TowerData> ();
-		attackStrategy = GetComponent<AttackStrategies> ();
+		towerData = transform.parent.gameObject.GetComponent<TowerData> ();
+		attackStrategy = transform.parent.gameObject.GetComponent<AttackStrategies> ();
 		nextAttackTime = Time.time + towerData.rechargeRate;
 	}
 	
@@ -26,10 +26,10 @@ public class AttackENH : MonoBehaviour {
 			isEnergyFull = true;
 		}
 		if (isEnergyFull) {
-			//transform.GetComponent<Renderer> ().material.SetColor ("_Color", Color.red);
+			transform.GetComponent<Renderer> ().material.SetColor ("_Color", Color.red);
 		}
 		if (!isEnergyFull) {
-			//transform.GetComponent<Renderer> ().material.SetColor ("_Color", Color.gray);
+			transform.GetComponent<Renderer> ().material.SetColor ("_Color", Color.gray);
 		}
 	}
 
@@ -62,9 +62,9 @@ public class AttackENH : MonoBehaviour {
 	}
 
 	void AttackAt(Transform trans) {
-		GameObject bulletGO = (GameObject)Instantiate(projectileX, botSpawnTransform.position, botSpawnTransform.rotation);
+		GameObject projectileGO = (GameObject)Instantiate(projectileX, botSpawnTransform.position, botSpawnTransform.rotation);
 
-		Bullet b = bulletGO.GetComponent<Bullet>();
-		b.target = trans.transform;
+		Projectile p = projectileGO.GetComponent<Projectile>();
+		p.target = trans.transform;
 	}
 }

@@ -10,6 +10,7 @@ public class AttackEnemies : MonoBehaviour {
 	private AttackStrategies attackStrategy;
 	private TowerData towerData;
 	private float aimError;
+	private float fireCooldownLeft;
 
 	// Use this for initialization
 	void Start () {
@@ -21,7 +22,7 @@ public class AttackEnemies : MonoBehaviour {
 	void Update () {
 
 		if(attackStrategy.targetEnemy == null) {
-			Debug.Log("No enemies?");
+			//Debug.Log("No enemies?");
 			return;
 		}
 
@@ -32,9 +33,9 @@ public class AttackEnemies : MonoBehaviour {
 		towerBody.rotation = Quaternion.Lerp(towerBody.rotation, desiredRotation, Time.deltaTime * towerData.turnSpeed);
 
 		// Attack target enemy
-		towerData.fireCooldownLeft -= Time.deltaTime;
-		if(towerData.fireCooldownLeft <= 0 && relativePos.magnitude <= towerData.range) {
-			towerData.fireCooldownLeft = towerData.fireCooldown;
+		fireCooldownLeft -= Time.deltaTime;
+		if(fireCooldownLeft <= 0 && relativePos.magnitude <= towerData.range) {
+			fireCooldownLeft = towerData.fireCoolDown;
 			AttackAt(attackStrategy.targetEnemy);
 		}
 
@@ -46,9 +47,9 @@ public class AttackEnemies : MonoBehaviour {
 	}
 
 	void AttackAt(Transform trans){
-		GameObject bulletGO = (GameObject)Instantiate(projectile, this.transform.position, this.transform.rotation);
+		GameObject projectileGO = (GameObject)Instantiate(projectile, botSpawnTransform.position, this.transform.rotation);
 
-		Bullet b = bulletGO.GetComponent<Bullet>();
-		b.target = trans;
+		Projectile p = projectileGO.GetComponent<Projectile>();
+		p.target = trans;
 	}
 }

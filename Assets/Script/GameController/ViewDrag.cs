@@ -13,7 +13,7 @@ public class ViewDrag : MonoBehaviour
 
     void Start()
     {
-        speed = 1.0f;
+        //speed = 1.0f;
         GetComponent<Camera>().orthographicSize = Mathf.Max(GetComponent<Camera>().orthographicSize, 30f);
         worldLowerLeft = Camera.main.ViewportToWorldPoint(Vector3.zero);
         worldUpperRight = Camera.main.ViewportToWorldPoint(Vector3.one);

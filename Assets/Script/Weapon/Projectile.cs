@@ -16,7 +16,7 @@ public class Projectile : MonoBehaviour {
 	void Start () {
 		damage = Mathf.Pow (2, level - 1) * damage;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if(target == null) {
@@ -48,7 +48,7 @@ public class Projectile : MonoBehaviour {
 			//target.GetComponent<Enemy>().TakeDamage(type, level, damage);
 			//damage = Mathf.Pow (2, level - 1) * damage;
 			target.GetComponent<Enemy>().TakeDamage(damage, type);
-			Debug.Log ("Normal Attack takes " + damage.ToString() + " damage!");
+			//Debug.Log ("Normal Attack takes " + damage.ToString() + " damage!");
 		}
 		else {
 			Collider[] cols = Physics.OverlapSphere(transform.position, radius);
