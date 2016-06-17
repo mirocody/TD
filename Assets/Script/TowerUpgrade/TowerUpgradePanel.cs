@@ -4,14 +4,6 @@ using System.Collections;
 
 public class TowerUpgradePanel : MonoBehaviour {
 
-	public float yoffset;
-
-//	[HideInInspector]
-//	public bool isTowerUpgradeConfirm;
-
-	//private Camera myCamera;
-	//private Transform towerUpgradeContainerTrans;
-	//private TowerBodyTouch towerBodyTouch;
 	private Transform costTxt;
 	private Transform towerUpgradeImg;
 	private TowerUpgradeController towerUpgradeController;
@@ -19,18 +11,14 @@ public class TowerUpgradePanel : MonoBehaviour {
 
 	void Start()
 	{
-		//towerUpgradeContainerTrans = transform.Find("TUCanvas/TUContainer");
-		costTxt = transform.Find ("TUCanvas/TUContainer/CostTxt");
-		towerUpgradeImg = transform.Find("TUCanvas/TUContainer/TowerUpgradeImage");
+		costTxt = transform.Find ("TUCanvas/CostTxt");
+		towerUpgradeImg = transform.Find("TUCanvas/TowerUpgradeImage");
 		towerUpgradeController = GameObject.Find ("TowerUpgrade").GetComponent<TowerUpgradeController> ();
-		//towerBodyTouch = GameObject.Find("TowerUpgrade").GetComponent<TowerBodyTouch> ();
-		//myCamera = GameObject.Find ("Main Camera").GetComponent<Camera> ();
 	}
 
 	void Update()
 	{
 		//scaleTowerUpgradePanel2Camera ();
-		//anchorTowerUpgradePanel2Tower ();
 		// set the upgrade cost
 		costTxt.GetComponent<Text> ().text = towerUpgradeController.upgradeCost.ToString();
 		if (towerUpgradeController.canUpgradeTower ()) {

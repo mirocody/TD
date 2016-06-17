@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class TowerUpgradeController : MonoBehaviour {
 
 	public float yOffset;
+	public float depreciation;
 
 	public GameObject[] MetalTowers;
 	public GameObject[] WoodTowers;
@@ -17,34 +18,36 @@ public class TowerUpgradeController : MonoBehaviour {
 	[HideInInspector]
 	public int upgradeCost;
 
-	//TowerUpgradePanel towerUpgradePanel;
-	//TowerBodyTouch towerBodyTouch;
 	GameTouchHandler gameTouch;
-	//Transform towerUpgradeContainerTrans;
-	//Camera myCamera;
+	TowerBuildController tBController;
 	RaycastHit myHit;
 	GameObject myTowerUpgradePanel;
+	int buildCost;
 
 	void Start () {
-		//towerUpgradePanel = transform.Find ("TowerUpgradePanel").GetComponent<TowerUpgradePanel>();
-		//towerUpgradeContainerTrans = transform.Find("TowerUpgradePanel/TUCanvas/TUContainer");
-		//towerBodyTouch = GetComponent<TowerBodyTouch> ();
 		gameTouch = GameObject.Find ("GameTouch").GetComponent<GameTouchHandler> ();
-		//myCamera = GameObject.Find("Main Camera").GetComponent<Camera> ();
+		tBController = GameObject.Find ("TowerBuild").GetComponent<TowerBuildController> ();
 	}
 	
 	void Update () {
 		if (gameTouch.isTowerBodyTapped) {
 			myHit = gameTouch.hit;
 			upgradeCost = myHit.transform.gameObject.GetComponent<TowerData> ().upgradeCost;
+			buildCost = myHit.transform.gameObject.GetComponent<TowerData> ().cost;
+
+			// Find and Destroy existing upgrade panel(s) before instantiating new ones
+			GameObject[] existingTUPanels = GameObject.FindGameObjectsWithTag("TowerUpgradePanel");
+			foreach (GameObject existingTUPanel in existingTUPanels) {
+				Destroy (existingTUPanel);
+			}
 
 			myTowerUpgradePanel = (GameObject)Instantiate(towerUpgradePanel, 
 				new Vector3(
-					myHit.transform.position.x,
-					myHit.transform.position.y + yOffset,
-					myHit.transform.position.z
+					Camera.main.WorldToScreenPoint(myHit.transform.position).x, //myHit.transform.position.x,
+					Camera.main.WorldToScreenPoint(myHit.transform.position).y + yOffset, //myHit.transform.position.y + yOffset,
+					0 //myHit.transform.position.z
 				),
-				myHit.transform.rotation
+				Quaternion.identity //myHit.transform.rotation
 			);
 
 			myTowerUpgradePanel.SetActive (true);
@@ -104,6 +107,23 @@ public class TowerUpgradeController : MonoBehaviour {
 			}
 		}
 
+		if (gameTouch.isTowerSoldConfirm) {
+			Destroy(myTowerUpgradePanel);
+			Destroy (myHit.transform.gameObject);
+			GoldManager.gold += Mathf.RoundToInt(buildCost * depreciation);
+
+			// if the tower was sold, remove its tower spot from the occupiedTowerSpots list so player can build new tower above it
+			Collider[] colliders = Physics.OverlapSphere(myHit.transform.position, 1.0f);
+			if(colliders.Length > 1)
+			{
+				foreach (Collider c in colliders) {
+					if (c.tag == "TowerSpot") {
+						tBController.occupiedTowerSpots.Remove (c.name);
+					}
+				}
+			}
+		}
+
 		if (gameTouch.isGameEnvironmentTapped)
 		{
 			Destroy(myTowerUpgradePanel);
@@ -112,7 +132,6 @@ public class TowerUpgradeController : MonoBehaviour {
 
 	public bool canUpgradeTower()
 	{
-		//Debug.Log ("upgrade cost is:" + upgradeCost);
 		return GoldManager.gold >= upgradeCost && 
 			myHit.transform.GetComponent<TowerData>().level < MetalTowers.GetLength(0);
 	}

@@ -7,9 +7,11 @@ public class TowerBuildController : MonoBehaviour {
 	public GameObject[] towers; 
 	public GameObject towerSelectionPanel;
 	public float yOffset;
+	[HideInInspector]
+	public List<string> occupiedTowerSpots = new List<string> ();
+
 
 	GameTouchHandler gameTouch;
-	List<string> occupiedTowerSpots = new List<string> ();
 	RaycastHit myHit;
 	GameObject selectedTower;
 	GameObject myTowerSelectionPanel;
@@ -19,17 +21,24 @@ public class TowerBuildController : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (/*towerSpotTouch*/gameTouch.isTowerSpotTapped /*&& !towerBodyTouch.isTowerBodyTapped*/ && Time.timeScale!=0) {
+        if (gameTouch.isTowerSpotTapped && Time.timeScale!=0) {
 			myHit = gameTouch.hit;
-			if (!occupiedTowerSpots.Contains (/*towerSpotTouch*/myHit.collider.name)) {
-				// if the tower spot is empty, means not occupied by tower
+			// if the tower spot is empty, means not occupied by tower
+			if (!occupiedTowerSpots.Contains (myHit.collider.name)) {
+
+				// Find and Destroy existing selection panel(s) before instantiating new ones
+				GameObject[] existingTSPanels = GameObject.FindGameObjectsWithTag("TowerSelectionPanel");
+				foreach (GameObject existingTSPanel in existingTSPanels) {
+					Destroy (existingTSPanel);
+				}
+
 				myTowerSelectionPanel = (GameObject)Instantiate(towerSelectionPanel, 
 					new Vector3(
-						myHit.transform.position.x,
-						myHit.transform.position.y + yOffset,
-						myHit.transform.position.z
-					),
-					myHit.transform.rotation
+						Camera.main.WorldToScreenPoint(myHit.transform.position).x, //myHit.transform.position.x,
+						Camera.main.WorldToScreenPoint(myHit.transform.position).y, //myHit.transform.position.y + yOffset,
+						0 //myHit.transform.position.z
+						),
+					Quaternion.identity //myHit.transform.rotation
 				);
 				//moveTowerSelectionPanel2HitPoint();
 				myTowerSelectionPanel.SetActive (true);
@@ -63,20 +72,20 @@ public class TowerBuildController : MonoBehaviour {
 //        // move the tower selection panel to the touch point
 //        //towerSelectPanel.init = true;
 //        //towerSelectPanel.distance = 0;
-////        for (int i = 0; i < 5; i++)
-////        {
-////            towerSelectionImageTrans[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(
-////				myCamera.WorldToScreenPoint(myHit.transform.position).x,//towerSpotTouch.touchPos.x,
-////				myCamera.WorldToScreenPoint(myHit.transform.position).y //towerSpotTouch.touchPos.y
-////            );
-////        }
-//		TSCanvas = GameObject.Find ("TowerSelectionPanel/TSCanvas").transform;
-//
-//		TSCanvas.GetComponent<RectTransform>().position = new Vector3 (
-//			myHit.transform.position.x,
-//			myHit.transform.position.y + yOffset,
-//			myHit.transform.position.z
-//		);
+//        for (int i = 0; i < 5; i++)
+//        {
+//            towerSelectionImageTrans[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(
+//				myCamera.WorldToScreenPoint(myHit.transform.position).x,//towerSpotTouch.touchPos.x,
+//				myCamera.WorldToScreenPoint(myHit.transform.position).y //towerSpotTouch.touchPos.y
+//            );
+//        }
+////		TSCanvas = GameObject.Find ("TowerSelectionPanel/TSCanvas").transform;
+////
+////		TSCanvas.GetComponent<RectTransform>().position = new Vector3 (
+////			myHit.transform.position.x,
+////			myHit.transform.position.y + yOffset,
+////			myHit.transform.position.z
+////		);
 //    }
 
 	bool canBuildTower()
