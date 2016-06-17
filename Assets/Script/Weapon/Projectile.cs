@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour {
 	public float radius = 0;
 	public int level = 0;
 	public char type;
+	public bool isElevate = false;
 
 	// Use this for initialization
 	void Start () {

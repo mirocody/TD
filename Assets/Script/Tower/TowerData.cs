@@ -7,13 +7,28 @@ public class TowerData : MonoBehaviour {
 
 	public float range = 10f;
 
+	[HideInInspector]
+	public float elevateRange;
+
 	public float turnSpeed = 5.0f;
+
+	[HideInInspector]
+	public float elevateTurnSpeed;
 
 	public float errorAmount = 1.0f;
 
+	[HideInInspector]
+	public float elevateErrorAmount;
+
 	public float fireCoolDown = 0.5f;
 
+	[HideInInspector]
+	public float elevateFireCoolDown;
+
 	public float rechargeRate = 10.0f;
+
+	[HideInInspector]
+	public float elevateRechangeRate;
 
 	public int level = 0;
 
@@ -21,29 +36,11 @@ public class TowerData : MonoBehaviour {
 
 	public char towerType;
 
-//	public int getUpgradeCost(int currentLevel, string towerTag)
-//	{
-//		switch (towerTag) {
-//		case "EarthTower":
-//			return 10;
-//			break;
-//		case "FireTower":
-//			return 10;
-//			break;
-//		case "MetalTower":
-//			return 10;
-//			break;
-//		case "WaterTower":
-//			return 10;
-//			break;
-//		case "WoodTower":
-//			return 10;
-//			break;
-//		default:
-//			return 5;
-//			break;
-//		}
-//	}
+	public float elevateRate = 0f;
+
+	public float elevateRadius = 0f;
+
+	public bool isElevated = false;
 
 	public char getTowerType()
 	{

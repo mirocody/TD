@@ -109,11 +109,35 @@ public class TowerUpgradeController : MonoBehaviour {
 
 		if (gameTouch.isTowerSoldConfirm) {
 			Destroy(myTowerUpgradePanel);
+			Collider[] colliders;
+
+			// before destroy the "Earth" tower, restore the elevate value for the surrounding towers 
+			if (myHit.transform.GetComponent<TowerData> ().towerType == 'e') {
+				colliders = Physics.OverlapSphere(myHit.transform.position, myHit.transform.GetComponent<TowerData>().elevateRadius);
+				if (colliders.Length > 1) {
+					foreach (Collider c in colliders) {
+						if (c.tag == "TowerBody" && c != myHit.collider) {
+							if (c.GetComponent<TowerData> ().isElevated) {
+								TowerData otherTowerData = c.GetComponent<TowerData> ();
+								// restore elevate values
+								otherTowerData.range -=	otherTowerData.elevateRange;
+								otherTowerData.turnSpeed -= otherTowerData.elevateTurnSpeed;
+								otherTowerData.errorAmount += otherTowerData.elevateErrorAmount;
+								otherTowerData.fireCoolDown += otherTowerData.elevateFireCoolDown;
+								//c.GetComponent<TowerData> ().rechargeRate += otherTowerData.elevateRechangeRate;
+								c.transform.Find("Light").GetComponent<Light> ().enabled = false;
+								otherTowerData.isElevated = false;
+							}
+						}
+					}
+				}
+			}
+
 			Destroy (myHit.transform.gameObject);
 			GoldManager.gold += Mathf.RoundToInt(buildCost * depreciation);
 
 			// if the tower was sold, remove its tower spot from the occupiedTowerSpots list so player can build new tower above it
-			Collider[] colliders = Physics.OverlapSphere(myHit.transform.position, 1.0f);
+			colliders = Physics.OverlapSphere(myHit.transform.position, 1.0f);
 			if(colliders.Length > 1)
 			{
 				foreach (Collider c in colliders) {
