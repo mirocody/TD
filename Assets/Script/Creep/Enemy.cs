@@ -24,7 +24,6 @@ public class Enemy : MonoBehaviour {
 	void Start () {
         isFreezing = false;
         isPoisoning = false;
-		pathGO = GameObject.Find("Path");
 		if(level==1){
 			enemyHealth=10f;
 			enemyGold=5;
@@ -63,8 +62,8 @@ public class Enemy : MonoBehaviour {
 	}
 
 	void GetNextPathNode() {
-		if(pathNodeIndex < pathGO.transform.childCount) {
-			targetPathNode = pathGO.transform.GetChild(pathNodeIndex);
+		if(pathNodeIndex < 11) {
+			targetPathNode = NewMap.pathPoints[pathNodeIndex].transform;
 			pathNodeIndex++;
 		}
 		else {
