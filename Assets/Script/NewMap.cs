@@ -24,7 +24,8 @@ public class NewMap : MonoBehaviour {
 			for (int column = 0; column < columns; column++) {
 				if (map [row, column] == 2) {
 					Vector3 position = new Vector3 ((float)(column - 15), 0.07f, -(float)(row) + 2);
-					Instantiate (towerspot, position, this.transform.rotation);
+					GameObject temp = (GameObject)Instantiate (towerspot, position, this.transform.rotation);
+                    temp.name+=("_"+row+"_"+column);
 				} else if (map [row, column] == 3) {
 					Vector3 position = new Vector3 ((float)(column - 15), 0.07f, -(float)(row) + 2);
 					Instantiate (route, position, this.transform.rotation);

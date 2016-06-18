@@ -1,19 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
+
+
 public class Enemy : MonoBehaviour {
 
-	private float enemyHealth;		//cur health
-	private float max_enemyHealth;	//max Health
+	private float enemyHealth;
+    private float max_enemyHealth;
 	private int enemyGold;
 	private int enemyScore;
 	private float enemySpeed;
 	private char enemyElement;
 	public int level;
-	public GameObject healthBar;	//healthBar
-	private GameObject my_health;	//initiated healthBar
-	public Transform coin;			//coin
-	public GameObject coin_out;		//a place where coin comes out
+    private bool isPoisoning;
+    private bool isFreezing;
+    private float remainingTime;
+
+    public GameObject healthBar;    //healthBar
+    private GameObject my_health;   //initial healthBar
 
 	GameObject pathGO;
 	Transform targetPathNode;
@@ -22,10 +26,10 @@ public class Enemy : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//pathGO = NewMap.pathPoints[pathNodeIndex];
-
+        isFreezing = false;
+        isPoisoning = false;
 		if(level==1){
-			max_enemyHealth=10f;		//modify to be max instead of w/o max
+			max_enemyHealth=10f;
 			enemyGold=5;
 			enemyScore=3;
 			enemySpeed=1f/*6f*/;
@@ -35,35 +39,34 @@ public class Enemy : MonoBehaviour {
 			max_enemyHealth=20f;
 			enemyGold=10;
 			enemyScore=6;
-			enemySpeed=6f;
+			enemySpeed=1f;
 			enemyElement='m';
 		}
 		if(level==3){
-			max_enemyHealth=30f;
+            max_enemyHealth = 30f;
 			enemyGold=20;
 			enemyScore=12;
 			enemySpeed=6f;
 			enemyElement='e';
 		}
 		if(level==4){
-			max_enemyHealth=40f;
+            max_enemyHealth = 40f;
 			enemyGold=40;
 			enemyScore=24;
 			enemySpeed=6f;
 			enemyElement='w';
 		}
 		if(level==5){
-			max_enemyHealth=50f;
+            max_enemyHealth = 50;
 			enemyGold=50;
 			enemyScore=36;
 			enemySpeed=6f;
 			enemyElement='f';
 		}
 
-		//Health Bar
-		enemyHealth = max_enemyHealth;
-		my_health = (GameObject)Instantiate (healthBar, this.transform.position, this.transform.rotation);
-
+        //health Bar
+        enemyHealth = max_enemyHealth;
+        my_health = (GameObject)Instantiate(healthBar, this.transform.position, this.transform.rotation);
 	}
 
 	void GetNextPathNode() {
@@ -79,6 +82,7 @@ public class Enemy : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        checkStatus(level);
 		if(targetPathNode == null) {
 			GetNextPathNode();
 			if(targetPathNode == null) {
@@ -106,29 +110,32 @@ public class Enemy : MonoBehaviour {
 			this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.deltaTime*Random.Range(5,10));
 		}
 
-		// Update Health Bar Location
-		my_health.GetComponent<Transform>().position = new Vector3(
-			Camera.main.WorldToScreenPoint(this.transform.position).x,
-			Camera.main.WorldToScreenPoint(this.transform.position).y + 75f,
-			0
-		);
+        //Update Health Bar Location.
+        my_health.GetComponent<Transform>().position = new Vector3(
+           Camera.main.WorldToScreenPoint(this.transform.position).x,
+           Camera.main.WorldToScreenPoint(this.transform.position).y+75f,
+           0
+        );
 	}
 
-	// Set Health Bar
-	public void SetHealthBar(float calc_health) {
-		//enemyHealth value 0-1
-		Debug.Log("calc_health * healthBar.transform.localScale.x" + calc_health * healthBar.transform.localScale.x);
-		my_health.transform.Find("HealthCanvas/Health").GetComponent<RectTransform>().localScale = new Vector3 (calc_health, 1,  1);
-
-	}
+    // Set Health Bar
+    public void SetHealthBar(float calc_health)
+    {
+        my_health.transform.Find("HealthCanvas/Health").GetComponent<RectTransform>().localScale = new Vector3 (calc_health, 1, 1);
+    }
 
 	void ReachedGoal() {
 		GameObject.FindObjectOfType<HPManager>().LoseLife();
         SpawnerManager.stillAlive--;
 		Destroy(gameObject);
+        Destroy(my_health);
 	}
 
 	public void TakeDamage(float damage, char element) {
+
+    //set status for wood or water bullet.
+    if (element == 'm' || element == 'w') changeStatus(element);
+
 	//gold enemy
 		if(enemyElement=='g'){
 			if(element=='f'){
@@ -136,7 +143,7 @@ public class Enemy : MonoBehaviour {
 			}
 			else if(element=='m'){
 				damage=damage/2;
-			}
+            }
 		}
 	//wood enemy
 		if(enemyElement=='m'){
@@ -174,26 +181,84 @@ public class Enemy : MonoBehaviour {
 				damage=damage/2;
 			}
 		}
+		Debug.Log ("Enemy takes "+damage+" damage!");
 
 		enemyHealth -= damage;
-		// calculate health bar and set
-		float calc_health = enemyHealth / max_enemyHealth;
-		SetHealthBar (calc_health);
+        //calculate health bar and set
+        float calc_health = enemyHealth / max_enemyHealth;
+        SetHealthBar(calc_health);
 
 		if(enemyHealth <= 0) {
-			Die();
-
+			Die(element);
 		}
 	}
 
-	public void Die() {
+	public void Die(char element) {
 		// TODO: Do this more safely!
+		if(element=='g'){
+			enemyGold=enemyGold*2;
+		}
 		ScoreManager.score += enemyScore; //+enemyscore
 		GoldManager.gold += enemyGold; //+enemygold
-    	SpawnerManager.stillAlive--;
+    SpawnerManager.stillAlive--;
 		Destroy(gameObject);
-		// instantiate a coin
-		Instantiate(coin, coin_out.transform.position, Quaternion.identity);
-
+        Destroy(my_health);
 	}
+
+    public void changeStatus(char element)
+    {
+        if (element == 'm')
+        {
+            isPoisoning = true;
+            remainingTime = 5.0f;
+            Material test = (Material)Resources.Load("poisoning");
+            transform.Find("Body").GetComponent<Renderer>().material = test;
+        }
+        if (element == 'w')
+        {
+            if (!isFreezing) enemySpeed = 2 * enemySpeed / 3;
+            isFreezing = true;
+            remainingTime = 5.0f;
+            Material test = (Material)Resources.Load("freezing");
+            transform.Find("Body").GetComponent<Renderer>().material = test;
+        }
+    }
+
+    public void checkStatus(int num)
+    {
+        if (isPoisoning)
+        {
+            if (remainingTime <= 0)
+            {
+                isPoisoning=false;
+                remainingTime = 0;
+                if (isFreezing) transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("freezing");
+                else transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("creep_"+num);
+            }
+            else
+            {
+                enemyHealth -= (1 * Time.deltaTime);
+                remainingTime -= (1 * Time.deltaTime);
+                float calc_health = enemyHealth / max_enemyHealth;
+                SetHealthBar(calc_health);
+                Debug.Log(enemyHealth);
+            }
+        }
+        if (isFreezing)
+        {
+            if (remainingTime <= 0)
+            {
+                isFreezing = false;
+                remainingTime = 0;
+                if (isPoisoning) transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("poisoning");
+                else transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("creep_"+num);
+                enemySpeed = 3 * enemySpeed / 2;
+            }
+            else
+            {
+                remainingTime -= (1 * Time.deltaTime);
+                Debug.Log(enemyHealth);
+            }
+        }
+    }
 }
