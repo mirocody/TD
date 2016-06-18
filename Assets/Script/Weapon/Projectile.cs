@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour {
 
 	public float speed = 15f;
 	public float damage = 1f;
-	public float radius = 0;
+	public float radius = 10f;
 	public int level = 0;
 	public char type;
     public bool isElevate = false;
@@ -44,7 +44,7 @@ public class Projectile : MonoBehaviour {
 	}
 
 	void DoBulletHit() {
-		if(radius == 0) {
+		if(type!='f') {
 			//target.GetComponent<Enemy>().TakeDamage(damage);
 			//target.GetComponent<Enemy>().TakeDamage(type, level, damage);
 			//damage = Mathf.Pow (2, level - 1) * damage;
@@ -53,7 +53,7 @@ public class Projectile : MonoBehaviour {
 		}
 		else {
 			Collider[] cols = Physics.OverlapSphere(transform.position, radius);
-			Debug.Log ("Enhanced Attack!");
+			Debug.Log ("Fire tower attack!");
 			foreach(Collider c in cols) {
 				Enemy e = c.GetComponent<Enemy>();
 				if(e != null) {
@@ -62,7 +62,7 @@ public class Projectile : MonoBehaviour {
 					//e.GetComponent<Enemy>().TakeDamage(type, level, damage);
 					//damage = Mathf.Pow (2, level - 1) * damage;
 					target.GetComponent<Enemy>().TakeDamage(damage, type);
-					Debug.Log ("Enhanced Attack takes " + damage.ToString() + " damage!");
+					Debug.Log ("Fire attack AOE takes " + damage.ToString() + " damage!");
 				}
 			}
 		}

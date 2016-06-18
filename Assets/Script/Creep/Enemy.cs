@@ -160,15 +160,19 @@ public class Enemy : MonoBehaviour {
 				damage=damage/2;
 			}
 		}
+		Debug.Log ("Enemy takes "+damage+" damage!");
 
 		enemyHealth -= damage;
 		if(enemyHealth <= 0) {
-			Die();
+			Die(element);
 		}
 	}
 
-	public void Die() {
+	public void Die(char element) {
 		// TODO: Do this more safely!
+		if(element=='g'){
+			enemyGold=enemyGold*2;
+		}
 		ScoreManager.score += enemyScore; //+enemyscore
 		GoldManager.gold += enemyGold; //+enemygold
     SpawnerManager.stillAlive--;
