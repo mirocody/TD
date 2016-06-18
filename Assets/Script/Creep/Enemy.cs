@@ -6,6 +6,7 @@ using System.Collections;
 public class Enemy : MonoBehaviour {
 
 	private float enemyHealth;
+    private float max_enemyHealth;
 	private int enemyGold;
 	private int enemyScore;
 	private float enemySpeed;
@@ -14,6 +15,9 @@ public class Enemy : MonoBehaviour {
     private bool isPoisoning;
     private bool isFreezing;
     private float remainingTime;
+
+    public GameObject healthBar;    //healthBar
+    private GameObject my_health;   //initial healthBar
 
 	GameObject pathGO;
 	Transform targetPathNode;
@@ -25,40 +29,44 @@ public class Enemy : MonoBehaviour {
         isFreezing = false;
         isPoisoning = false;
 		if(level==1){
-			enemyHealth=10f;
+			max_enemyHealth=10f;
 			enemyGold=5;
 			enemyScore=3;
 			enemySpeed=1f/*6f*/;
 			enemyElement='g';
 		}
 		if(level==2){
-			enemyHealth=20f;
+			max_enemyHealth=20f;
 			enemyGold=10;
 			enemyScore=6;
 			enemySpeed=1f;
 			enemyElement='m';
 		}
 		if(level==3){
-			enemyHealth=30f;
+            max_enemyHealth = 30f;
 			enemyGold=20;
 			enemyScore=12;
 			enemySpeed=6f;
 			enemyElement='e';
 		}
 		if(level==4){
-			enemyHealth=40f;
+            max_enemyHealth = 40f;
 			enemyGold=40;
 			enemyScore=24;
 			enemySpeed=6f;
 			enemyElement='w';
 		}
 		if(level==5){
-			enemyHealth=50;
+            max_enemyHealth = 50;
 			enemyGold=50;
 			enemyScore=36;
 			enemySpeed=6f;
 			enemyElement='f';
 		}
+
+        //health Bar
+        enemyHealth = max_enemyHealth;
+        my_health = (GameObject)Instantiate(healthBar, this.transform.position, this.transform.rotation);
 	}
 
 	void GetNextPathNode() {
@@ -101,12 +109,26 @@ public class Enemy : MonoBehaviour {
 			Quaternion targetRotation = Quaternion.LookRotation( dir );
 			this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.deltaTime*Random.Range(5,10));
 		}
+
+        //Update Health Bar Location.
+        my_health.GetComponent<Transform>().position = new Vector3(
+           Camera.main.WorldToScreenPoint(this.transform.position).x,
+           Camera.main.WorldToScreenPoint(this.transform.position).y+75f,
+           0
+        );
 	}
+
+    // Set Health Bar
+    public void SetHealthBar(float calc_health)
+    {
+        my_health.transform.Find("HealthCanvas/Health").GetComponent<RectTransform>().localScale = new Vector3 (calc_health, 1, 1);
+    }
 
 	void ReachedGoal() {
 		GameObject.FindObjectOfType<HPManager>().LoseLife();
         SpawnerManager.stillAlive--;
 		Destroy(gameObject);
+        Destroy(my_health);
 	}
 
 	public void TakeDamage(float damage, char element) {
@@ -162,6 +184,10 @@ public class Enemy : MonoBehaviour {
 		Debug.Log ("Enemy takes "+damage+" damage!");
 
 		enemyHealth -= damage;
+        //calculate health bar and set
+        float calc_health = enemyHealth / max_enemyHealth;
+        SetHealthBar(calc_health);
+
 		if(enemyHealth <= 0) {
 			Die(element);
 		}
@@ -176,6 +202,7 @@ public class Enemy : MonoBehaviour {
 		GoldManager.gold += enemyGold; //+enemygold
     SpawnerManager.stillAlive--;
 		Destroy(gameObject);
+        Destroy(my_health);
 	}
 
     public void changeStatus(char element)
@@ -212,6 +239,8 @@ public class Enemy : MonoBehaviour {
             {
                 enemyHealth -= (1 * Time.deltaTime);
                 remainingTime -= (1 * Time.deltaTime);
+                float calc_health = enemyHealth / max_enemyHealth;
+                SetHealthBar(calc_health);
                 Debug.Log(enemyHealth);
             }
         }
