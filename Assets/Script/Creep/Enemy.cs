@@ -70,7 +70,7 @@ public class Enemy : MonoBehaviour {
 	}
 
 	void GetNextPathNode() {
-		if(pathNodeIndex < 11) {
+		if(pathNodeIndex < NewMap.pathPoints.GetLength(0)) {
 			targetPathNode = NewMap.pathPoints[pathNodeIndex].transform;
 			pathNodeIndex++;
 		}

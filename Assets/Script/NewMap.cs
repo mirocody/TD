@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 
 public class NewMap : MonoBehaviour {
 
@@ -9,11 +10,12 @@ public class NewMap : MonoBehaviour {
 	public TextAsset csvLevel;
 
 
-	private static int columns = 16;
-	private static int rows = 9;
+	private static int columns;
+	private static int rows;
+	private static int totalPathPoint;
 
-	public int[,] map = new int[rows, columns];
-	public static GameObject[] pathPoints = new GameObject[11];
+	public int[,] map;
+	public static GameObject[] pathPoints;
 
 
 	// Use this for initialization
@@ -44,17 +46,27 @@ public class NewMap : MonoBehaviour {
 
 	void InitialMap () {
 		string[] lines = csvLevel.text.Split ('\n');
-		int i = 0;
-		foreach (string line in lines) {
-			string[] map_choice = line.Split (',');
+		string line1 = lines [0];
+		// get the map count data;
+		string[] map_count = line1.Split (',');
+
+		totalPathPoint = int.Parse (map_count [1]);
+		columns = int.Parse (map_count [3]);
+		rows = int.Parse (map_count [5]);
+		pathPoints = new GameObject[totalPathPoint];
+		map = new int[rows, columns];
+
+		for(int i = 1; i < lines.GetLength(0); i++) {
+			string[] map_choice = lines[i].Split (',');
 			int j = 0;
 			foreach (string choice in map_choice) {
-				map [i, j] = int.Parse (choice);
+				map [i-1, j] = int.Parse (choice);
 				Debug.Log (i + "," + j + "\n");
 				j++;
 			}
-			i++;
 		}
+
+
 
 	}
 
