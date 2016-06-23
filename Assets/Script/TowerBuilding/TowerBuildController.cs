@@ -4,106 +4,72 @@ using System.Collections.Generic;
 
 public class TowerBuildController : MonoBehaviour {
 
-	public GameObject[] towers; 
+	public GameObject[] towers;
 	public GameObject towerSelectionPanel;
 	public float yOffset;
-	[HideInInspector]
-	public List<string> occupiedTowerSpots = new List<string> ();
+	public int[] costs;
 
+    [HideInInspector]
+	public List<string> occupiedTowerSpots = new List<string>();
 
-	GameTouchHandler gameTouch;
+    GameTouchHandler gameTouch;
 	RaycastHit myHit;
 	GameObject selectedTower;
 	GameObject myTowerSelectionPanel;
 
 	void Start () {
 		gameTouch = GameObject.Find("GameTouch").GetComponent<GameTouchHandler> ();
+		// pass the build cost to TowerSelectionPanel.cs
+		costs = new int[towers.Length];
+		for (int i = 0; i < towers.Length; i++) {
+			towers [i].GetComponent<TowerData> ().init ();
+			costs [i] = towers [i].GetComponent<TowerData> ().cost;
+		}
 	}
-	
-	void Update () {
-        if (gameTouch.isTowerSpotTapped && Time.timeScale!=0) {
-			myHit = gameTouch.hit;
-			// if the tower spot is empty, means not occupied by tower
-			if (!occupiedTowerSpots.Contains (myHit.collider.name)) {
 
-				// Find and Destroy existing selection panel(s) before instantiating new ones
-				GameObject[] existingTSPanels = GameObject.FindGameObjectsWithTag("TowerSelectionPanel");
-				foreach (GameObject existingTSPanel in existingTSPanels) {
-					Destroy (existingTSPanel);
+	void Update () {
+
+        if (gameTouch.isTowerSpotTapped && Time.timeScale != 0)
+        {
+            myHit = gameTouch.hit;
+            if (!occupiedTowerSpots.Contains(myHit.collider.name))
+            {
+				// Find and Destroy existing upgrade & selection panel(s) before instantiating new ones
+                Destroy(myTowerSelectionPanel);
+
+				GameObject[] existingTUPanels = GameObject.FindGameObjectsWithTag("TowerUpgradePanel");
+				foreach (GameObject existingTUPanel in existingTUPanels) {
+					Destroy (existingTUPanel);
 				}
 
-				myTowerSelectionPanel = (GameObject)Instantiate(towerSelectionPanel, 
-					new Vector3(
-						Camera.main.WorldToScreenPoint(myHit.transform.position).x, //myHit.transform.position.x,
-						Camera.main.WorldToScreenPoint(myHit.transform.position).y, //myHit.transform.position.y + yOffset,
-						0 //myHit.transform.position.z
-						),
-					Quaternion.identity //myHit.transform.rotation
-				);
-				//moveTowerSelectionPanel2HitPoint();
-				myTowerSelectionPanel.SetActive (true);
-			}
-		}
+                myTowerSelectionPanel = (GameObject)Instantiate(towerSelectionPanel,
+                    new Vector3(0, 0, 0),
+                    myHit.transform.rotation
+                );
+                myTowerSelectionPanel.SetActive(true);
+            }
+        }
 
 		if (isTowerSelectionConfirmed()) {
 			Destroy(myTowerSelectionPanel);
             if (canBuildTower ()) {
-				GoldManager.gold -= selectedTower.GetComponent<TowerData> ().cost;
-				Instantiate (selectedTower, myHit.transform.position, myHit.transform.rotation);
-				occupiedTowerSpots.Add (/*towerSpotTouch.hitColliderName*/myHit.collider.name);
+				GameObject myTower=(GameObject)Instantiate (selectedTower, myHit.transform.position, myHit.transform.rotation);
+				GoldManager.gold -= myTower.GetComponent<TowerData> ().cost;
+				occupiedTowerSpots.Add (myHit.collider.name);
 			}
 		}
-//        else if (towerSpotTouch.isBlank&&!isInsideSelectionPanel())
-//        {
-//            towerSelectPanel.gameObject.SetActive(false);
-//        }
+
+        checkHUDController();
 
 		if (gameTouch.isGameEnvironmentTapped) {
-			//towerSelectPanel.gameObject.SetActive(false);
 			Destroy(myTowerSelectionPanel);
-
 		}
-
-		//towerSelectPanel.isTowerSelected = false;
 	}
-
-//    void moveTowerSelectionPanel2HitPoint()
-//    {
-//        // move the tower selection panel to the touch point
-//        //towerSelectPanel.init = true;
-//        //towerSelectPanel.distance = 0;
-//        for (int i = 0; i < 5; i++)
-//        {
-//            towerSelectionImageTrans[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(
-//				myCamera.WorldToScreenPoint(myHit.transform.position).x,//towerSpotTouch.touchPos.x,
-//				myCamera.WorldToScreenPoint(myHit.transform.position).y //towerSpotTouch.touchPos.y
-//            );
-//        }
-////		TSCanvas = GameObject.Find ("TowerSelectionPanel/TSCanvas").transform;
-////
-////		TSCanvas.GetComponent<RectTransform>().position = new Vector3 (
-////			myHit.transform.position.x,
-////			myHit.transform.position.y + yOffset,
-////			myHit.transform.position.z
-////		);
-//    }
 
 	bool canBuildTower()
 	{
 		return GoldManager.gold >= selectedTower.GetComponent<TowerData> ().cost;
 	}
-
-//    bool isInsideSelectionPanel()
-//    {
-//        bool result = false;
-//        Vector3 dis0 = towerSelectionImageTrans[0].GetComponent<RectTransform>().position - Input.mousePosition;
-//        for(int i = 0; i < 5; i++)
-//        {
-//            if ((towerSelectionImageTrans[i].GetComponent<RectTransform>().position - Input.mousePosition).magnitude < 30) result = true;
-//        }
-//
-//        return result;
-//    }
 
 	bool isTowerSelectionConfirmed()
 	{
@@ -112,21 +78,48 @@ public class TowerBuildController : MonoBehaviour {
 		if (gameTouch.isEarthTowerSelected) {
 			isSelected = true;
 			selectedTower = towers [0];
-		} else if (gameTouch.isFireTowerSelected) {
+			selectedTower.GetComponent<TowerData>().init();
+
+		} else if (gameTouch.isWoodTowerSelected) {
 			isSelected = true;
 			selectedTower = towers [1];
+			selectedTower.GetComponent<TowerData>().init();
 		} else if (gameTouch.isMetalTowerSelected) {
 			isSelected = true;
 			selectedTower = towers [2];
-		} else if (gameTouch.isWaterTowerSelected) {
+			selectedTower.GetComponent<TowerData>().init();
+		} else if (gameTouch.isFireTowerSelected) {
 			isSelected = true;
 			selectedTower = towers [3];
-		} else if (gameTouch.isWoodTowerSelected) {
+			selectedTower.GetComponent<TowerData>().init();
+		} else if (gameTouch.isWaterTowerSelected) {
 			isSelected = true;
 			selectedTower = towers [4];
+			selectedTower.GetComponent<TowerData>().init();
 		} else
 			isSelected = false;
 
 		return isSelected;
 	}
+
+    //Check whether any UI component is clicked
+    void checkHUDController()
+    {
+        if (gameTouch.isPauseTapped)
+        {
+            HUDController.clickPauseButton();
+        }
+        if (gameTouch.isCloseTapped)
+        {
+            HUDController.clickCloseButton();
+        }
+        if (gameTouch.isRestartTapped)
+        {
+            HUDController.clickRestartButton();
+        }
+        if (gameTouch.isQuitTapped)
+        {
+            HUDController.clickQuitButton();
+        }
+    }
 }

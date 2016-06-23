@@ -36,8 +36,10 @@ public class TowerUpgradeController : MonoBehaviour {
 			upgradeCost = myHit.transform.gameObject.GetComponent<TowerData> ().upgradeCost;
 			buildCost = myHit.transform.gameObject.GetComponent<TowerData> ().cost;
 
-			// Find and Destroy existing upgrade panel(s) before instantiating new ones
-			GameObject[] existingTUPanels = GameObject.FindGameObjectsWithTag("TowerUpgradePanel");
+			// Find and Destroy existing upgrade & selection panel(s) before instantiating new ones
+			Destroy (myTowerUpgradePanel);
+
+			GameObject[] existingTUPanels = GameObject.FindGameObjectsWithTag("TowerSelectionPanel");
 			foreach (GameObject existingTUPanel in existingTUPanels) {
 				Destroy (existingTUPanel);
 			}
