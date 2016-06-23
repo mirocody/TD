@@ -32,6 +32,7 @@ public class TowerUpgradeController : MonoBehaviour {
 	void Update () {
 		if (gameTouch.isTowerBodyTapped) {
 			myHit = gameTouch.hit;
+			myHit.transform.gameObject.GetComponent<TowerData> ().init ();
 			upgradeCost = myHit.transform.gameObject.GetComponent<TowerData> ().upgradeCost;
 			buildCost = myHit.transform.gameObject.GetComponent<TowerData> ().cost;
 
@@ -63,41 +64,48 @@ public class TowerUpgradeController : MonoBehaviour {
 				// Destroy the current tower, then new the next level tower
 				Destroy (myHit.transform.gameObject);
 
+				// New next level tower
+				GameObject newTower;
 				switch (myHit.transform.GetComponent<TowerData> ().towerType) {
 				case 'g':
-					Instantiate (
-						MetalTowers [nextLevel - 1], // the array starts from 0, so the index of next level equals to nextLevel - 1
-						myHit.transform.position,
-						myHit.transform.rotation
-					);
+					newTower = (GameObject)Instantiate (
+	                    MetalTowers [nextLevel - 1], // the array starts from 0, so the index of next level equals to nextLevel - 1
+	                    myHit.transform.position,
+	                    myHit.transform.rotation
+	                );
+					AddElevatedValueAfterUpgrade (newTower);
 					break;
 				case 'm':
-					Instantiate (
+					newTower = (GameObject)Instantiate (
 						WoodTowers [nextLevel - 1],
 						myHit.transform.position,
 						myHit.transform.rotation
 					);
+					AddElevatedValueAfterUpgrade (newTower);
 					break;
 				case 'w':
-					Instantiate (
+					newTower = (GameObject)Instantiate (
 						WaterTowers [nextLevel - 1],
 						myHit.transform.position,
 						myHit.transform.rotation
 					);
+					AddElevatedValueAfterUpgrade (newTower);
 					break;
 				case 'f':
-					Instantiate (
+					newTower = (GameObject)Instantiate (
 						FireTowers [nextLevel - 1],
 						myHit.transform.position,
 						myHit.transform.rotation
 					);
+					AddElevatedValueAfterUpgrade (newTower);
 					break;
 				case 'e':
-					Instantiate (
+					newTower = (GameObject)Instantiate (
 						EarthTowers [nextLevel - 1],
 						myHit.transform.position,
 						myHit.transform.rotation
 					);
+					AddElevatedValueAfterUpgrade (newTower);
 					break;
 				default:
 					Debug.Log ("Tower type not found!");
@@ -118,15 +126,10 @@ public class TowerUpgradeController : MonoBehaviour {
 					foreach (Collider c in colliders) {
 						if (c.tag == "TowerBody" && c != myHit.collider) {
 							if (c.GetComponent<TowerData> ().isElevated) {
-								TowerData otherTowerData = c.GetComponent<TowerData> ();
-								// restore elevate values
-								otherTowerData.range -=	otherTowerData.elevateRange;
-								otherTowerData.turnSpeed -= otherTowerData.elevateTurnSpeed;
-								otherTowerData.errorAmount += otherTowerData.elevateErrorAmount;
-								otherTowerData.fireCoolDown += otherTowerData.elevateFireCoolDown;
+								RemoveElevatedValueAfterDestruction (c);
 								//c.GetComponent<TowerData> ().rechargeRate += otherTowerData.elevateRechangeRate;
 								c.transform.Find("Light").GetComponent<Light> ().enabled = false;
-								otherTowerData.isElevated = false;
+								c.GetComponent<TowerData> ().isElevated = false;
 							}
 						}
 					}
@@ -134,7 +137,7 @@ public class TowerUpgradeController : MonoBehaviour {
 			}
 
 			Destroy (myHit.transform.gameObject);
-			GoldManager.gold += Mathf.RoundToInt(buildCost * depreciation);
+			GoldManager.gold += Mathf.RoundToInt(buildCost - buildCost * depreciation);
 
 			// if the tower was sold, remove its tower spot from the occupiedTowerSpots list so player can build new tower above it
 			colliders = Physics.OverlapSphere(myHit.transform.position, 1.0f);
@@ -158,5 +161,26 @@ public class TowerUpgradeController : MonoBehaviour {
 	{
 		return GoldManager.gold >= upgradeCost && 
 			myHit.transform.GetComponent<TowerData>().level < MetalTowers.GetLength(0);
+	}
+
+	void AddElevatedValueAfterUpgrade(GameObject newTower)
+	{
+		TowerData newTowerData = newTower.GetComponent<TowerData> ();
+		if (newTowerData.isElevated) {
+			newTowerData.range += newTowerData.elevateRange;
+			newTowerData.turnSpeed += newTowerData.elevateTurnSpeed;
+			newTowerData.errorAmount -= newTowerData.elevateErrorAmount;
+			newTowerData.fireCoolDown -= newTowerData.elevateFireCoolDown;
+		}
+	}
+
+	void RemoveElevatedValueAfterDestruction(Collider c)
+	{
+		TowerData otherTowerData = c.GetComponent<TowerData> ();
+		// remove elevate values
+		otherTowerData.range -=	otherTowerData.elevateRange;
+		otherTowerData.turnSpeed -= otherTowerData.elevateTurnSpeed;
+		otherTowerData.errorAmount += otherTowerData.elevateErrorAmount;
+		otherTowerData.fireCoolDown += otherTowerData.elevateFireCoolDown;
 	}
 }
