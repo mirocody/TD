@@ -21,33 +21,33 @@ public class Projectile : MonoBehaviour {
 		initData = GameObject.Find("SystemData").GetComponent<InitialData>();
 		getBulletData(level,type);
 	}
-
+ 
 	public void getBulletData(int level,char type){
 		int i=level-1;
 		int j=0;
-		switch(type){
+		switch (type) {
 			case 'e':
-				j=0;
+				j = 0;
 				break;
 			case 'm':
-				j=1;
+				j = 1;
 				break;
 			case 'g':
-				j=2;
+				j = 2;
 				break;
 			case 'f':
-				j=3;
+				j = 3;
 				break;
 			case 'w':
-				j=4;
+				j = 4;
 				break;
 			default:
 				break;
+		}
+			damage = initData.damage [j, i];
+			speed = initData.speed [j, i];
+			radius = initData.radius [j, i];
 
-				damage=initData.damage[j,i];
-				speed=initData.speed[j,i];
-				radius=initData.radius[j,i];
-			}
 		}
 	// Update is called once per frame
 	void Update () {
@@ -75,6 +75,7 @@ public class Projectile : MonoBehaviour {
 	}
 
 	void DoBulletHit() {
+/*
 		if(type!='f') {
 			//target.GetComponent<Enemy>().TakeDamage(damage);
 			//target.GetComponent<Enemy>().TakeDamage(type, level, damage);
@@ -82,8 +83,10 @@ public class Projectile : MonoBehaviour {
 			target.GetComponent<Enemy>().TakeDamage(damage, type);
 			//Debug.Log ("Normal Attack takes " + damage.ToString() + " damage!");
 		}
-		else {
-			Collider[] cols = Physics.OverlapSphere(transform.position, radius);
+*/
+
+		Collider[] cols = Physics.OverlapSphere(transform.position, radius);
+		if(type=='f')	Debug.Log ("Radius is : " + radius);
 			Debug.Log ("Fire tower attack!");
 			foreach(Collider c in cols) {
 				Enemy e = c.GetComponent<Enemy>();
@@ -96,7 +99,7 @@ public class Projectile : MonoBehaviour {
 					Debug.Log ("Fire attack AOE takes " + damage.ToString() + " damage!");
 				}
 			}
-		}
+
 
 		// TODO: Maybe spawn a cool "explosion" object here?
 		Destroy(gameObject);

@@ -16,6 +16,7 @@ public class AttackEnemies : MonoBehaviour {
 	void Start () {
 		attackStrategy = gameObject.GetComponent<AttackStrategies>();
 		towerData = gameObject.GetComponent<TowerData> ();
+		towerData.init ();
 	}
 	
 	// Update is called once per frame
@@ -28,9 +29,12 @@ public class AttackEnemies : MonoBehaviour {
 
 		// Turn to the target enemy
 		Vector3 relativePos = attackStrategy.targetEnemy.position - this.transform.position;
-		Vector3 aimPoint = relativePos + new Vector3 (aimError, aimError, aimError);
-		Quaternion desiredRotation = Quaternion.LookRotation( aimPoint );
-		towerBody.rotation = Quaternion.Lerp(towerBody.rotation, desiredRotation, Time.deltaTime * towerData.turnSpeed);
+		if(inAttackRange(relativePos,towerData.range)){
+			Vector3 aimPoint = relativePos + new Vector3 (aimError, aimError, aimError);
+			Quaternion desiredRotation = Quaternion.LookRotation( aimPoint );
+			towerBody.rotation = Quaternion.Lerp(towerBody.rotation, desiredRotation, Time.deltaTime * towerData.turnSpeed);
+		}
+
 
 		// Attack target enemy
 		fireCooldownLeft -= Time.deltaTime;
@@ -39,6 +43,15 @@ public class AttackEnemies : MonoBehaviour {
 			AttackAt(attackStrategy.targetEnemy);
 		}
 
+	}
+
+	bool inAttackRange(Vector3 relativePos,float range){
+		float distance = relativePos.magnitude;
+		if (distance > range)
+			return false;
+		else
+			return true;
+	
 	}
 
 	void CalculateAimError()
@@ -51,5 +64,6 @@ public class AttackEnemies : MonoBehaviour {
 
 		Projectile p = projectileGO.GetComponent<Projectile>();
 		p.target = trans;
+		//p.radius = towerData.radius;
 	}
 }

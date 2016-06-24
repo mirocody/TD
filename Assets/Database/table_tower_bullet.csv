@@ -2,7 +2,7 @@ range,cost,upgradeCost,turnSpeed,errorAmount,fireCooldown,fireCooldownLeft,recha
 2,100,180,3,0,1,0,10,0,0,15,1,0
 2,150,250,5,0,1.5,0,10,0,0,15,2.5,0
 2,200,300,5,0,3,0,10,0,0,15,10,0
-2,100,180,5,0,1,0,10,0,0,15,2,1.5
+2,100,180,5,0,1,0,10,0,0,15,2,10
 2,120,120,5,0,1.5,0,10,0,0,15,1.5,0
 range,cost,upgradeCost,turnSpeed,errorAmount,fireCooldown,fireCooldownLeft,rechargeRate,elevateRate,elevateRadius,speed,damage,radius
 3,280,250,5,0,0.5,0,10,0,0,15,1,0
