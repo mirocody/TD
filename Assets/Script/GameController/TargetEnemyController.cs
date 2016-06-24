@@ -15,7 +15,17 @@ public class TargetEnemyController : MonoBehaviour {
         if (gameTouch.isEnemyTapped)
         {
             myHit = gameTouch.hit;
-            targetEnemey = myHit.transform;
+            if (targetEnemey == null || targetEnemey != myHit.transform)
+            {
+                if (targetEnemey != null) targetEnemey.GetComponent<Enemy>().my_Arrow.SetActive(false);
+                targetEnemey = myHit.transform;
+                targetEnemey.GetComponent<Enemy>().my_Arrow.SetActive(true);
+            }
+            else
+            {
+                targetEnemey.GetComponent<Enemy>().my_Arrow.SetActive(false);
+                targetEnemey = null;
+            }
         }
 	}
 }

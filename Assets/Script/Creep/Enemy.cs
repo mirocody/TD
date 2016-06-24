@@ -19,6 +19,9 @@ public class Enemy : MonoBehaviour {
 	public GameObject healthBar;    //healthBar
 	private GameObject my_health;   //initial healthBar
 
+    public GameObject selectedArrow; //Arrow for selected enemy.
+    public GameObject my_Arrow;//initial Arrow.
+
 	GameObject pathGO;
 	Transform targetPathNode;
 	int pathNodeIndex = 0;
@@ -71,6 +74,11 @@ public class Enemy : MonoBehaviour {
 		//health Bar
 		enemyHealth = max_enemyHealth;
 		my_health = (GameObject)Instantiate(healthBar, this.transform.position, this.transform.rotation);
+
+        //SelectedArrow.
+        my_Arrow = (GameObject)Instantiate(selectedArrow, this.transform.position, this.transform.rotation);
+        my_Arrow.SetActive(false);
+
 	}
 
 	void GetNextPathNode() {
@@ -120,7 +128,14 @@ public class Enemy : MonoBehaviour {
 			Camera.main.WorldToScreenPoint(this.transform.position).y+40f,
 			0
 		);
-	}
+
+        //Update Arrow Location.
+        my_Arrow.GetComponent<Transform>().position = new Vector3(
+            Camera.main.WorldToScreenPoint(this.transform.position).x,
+            Camera.main.WorldToScreenPoint(this.transform.position).y + 70f,
+            0
+        );
+    }
 
 	// Set Health Bar
 	public void SetHealthBar(float calc_health)
