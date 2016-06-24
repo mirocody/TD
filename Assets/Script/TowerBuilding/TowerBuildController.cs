@@ -34,7 +34,13 @@ public class TowerBuildController : MonoBehaviour {
             myHit = gameTouch.hit;
             if (!occupiedTowerSpots.Contains(myHit.collider.name))
             {
-                Destroy(myTowerSelectionPanel);
+				// Find and Destroy existing upgrade & selection panel(s) before instantiating new ones
+				Destroy(myTowerSelectionPanel);
+
+				GameObject[] existingTUPanels = GameObject.FindGameObjectsWithTag("TowerUpgradePanel");
+				foreach (GameObject existingTUPanel in existingTUPanels) {
+					Destroy (existingTUPanel);
+				}
 
                 myTowerSelectionPanel = (GameObject)Instantiate(towerSelectionPanel,
                     new Vector3(0, 0, 0),

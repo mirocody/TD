@@ -37,9 +37,11 @@ public class TowerUpgradeController : MonoBehaviour {
 			buildCost = myHit.transform.gameObject.GetComponent<TowerData> ().cost;
 
 			// Find and Destroy existing upgrade panel(s) before instantiating new ones
-			GameObject[] existingTUPanels = GameObject.FindGameObjectsWithTag("TowerUpgradePanel");
-			foreach (GameObject existingTUPanel in existingTUPanels) {
-				Destroy (existingTUPanel);
+			Destroy (myTowerUpgradePanel);
+
+			GameObject[] existingTSPanels = GameObject.FindGameObjectsWithTag("TowerSelectionPanel");
+			foreach (GameObject existingTSPanel in existingTSPanels) {
+				Destroy (existingTSPanel);
 			}
 
 			myTowerUpgradePanel = (GameObject)Instantiate(towerUpgradePanel, 
@@ -137,7 +139,7 @@ public class TowerUpgradeController : MonoBehaviour {
 			}
 
 			Destroy (myHit.transform.gameObject);
-			GoldManager.gold += Mathf.RoundToInt(buildCost * depreciation);
+			GoldManager.gold += Mathf.RoundToInt(buildCost - buildCost * depreciation);
 
 			// if the tower was sold, remove its tower spot from the occupiedTowerSpots list so player can build new tower above it
 			colliders = Physics.OverlapSphere(myHit.transform.position, 1.0f);
