@@ -38,7 +38,7 @@ public class AttackStrategies : MonoBehaviour {
 			FindWeakestEnemy ();
 			break;
 		default:
-			FindNearestEnemy ();
+            AttackTargetEnemy();
 			break;
 		}
 
@@ -102,5 +102,18 @@ public class AttackStrategies : MonoBehaviour {
 	//			targetTransform = null;
 	//		}
 	//	}
-
+    void AttackTargetEnemy()
+    {
+        if (TargetEnemyController.targetEnemey != null)
+        {
+            float d = Vector3.Distance(this.transform.position, TargetEnemyController.targetEnemey.transform.position);
+            dist = towerData.range;
+            if (d <= dist) targetEnemy = TargetEnemyController.targetEnemey;
+            else FindNearestEnemy();
+        }
+        else
+        {
+            FindNearestEnemy();
+        }
+    }
 }

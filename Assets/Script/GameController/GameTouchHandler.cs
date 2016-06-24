@@ -54,6 +54,9 @@ public class GameTouchHandler : MonoBehaviour {
     public bool isMenuButtonTapped;
 
     [HideInInspector]
+    public bool isEnemyTapped;
+
+    [HideInInspector]
 	public RaycastHit hit;
 
 	private float camRayLength = 100f;
@@ -148,8 +151,7 @@ public class GameTouchHandler : MonoBehaviour {
             }
 
             if (Physics.Raycast (camRay, out hit, camRayLength)) {
-                //Debug.Log ("GameTouchHandler.cs the hit tag is:" + hit.collider.tag);
-                Debug.Log(Time.deltaTime.ToString());
+                Debug.Log ("GameTouchHandler.cs the hit tag is:" + hit.collider.tag);
 				switch (hit.collider.tag) {
                 case "TowerBody":
                      isTowerBodyTapped = true;
@@ -160,6 +162,10 @@ public class GameTouchHandler : MonoBehaviour {
 				case "TowerSpot":
 					isTowerSpotTapped = true;
 					break;
+                case "Enemy":
+                    Debug.Log("OE");
+                    isEnemyTapped = true;
+                    break;
 				default:
 					isGameEnvironmentTapped = true;
 					break;
@@ -187,6 +193,7 @@ public class GameTouchHandler : MonoBehaviour {
             isTowerSoldConfirm = false;
             isCheckBoxTapped = false;
             isMenuButtonTapped = false;
+            isEnemyTapped = false;
 			isGameEnvironmentTapped = false;
 		}
 	}
