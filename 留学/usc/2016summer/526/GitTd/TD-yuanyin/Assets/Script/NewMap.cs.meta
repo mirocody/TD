@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: a13c7626bda82114c9d74816d7277383
+timeCreated: 1466825826
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - route: {fileID: 183640, guid: 2a5e0f2ea001e4414ac286b6b600db44, type: 2}
+  - towerspot: {fileID: 192586, guid: eeed39ab144c64302b4a2b95220df28e, type: 2}
+  - path: {fileID: 105558, guid: 91709e4a968744836b10e96d393bc943, type: 2}
+  - csvLevel: {instanceID: 0}
+  - barrel: {fileID: 106330, guid: c524736a3110545a08ca53be906b2741, type: 2}
+  - lid: {fileID: 115264, guid: bf2021beb6a774a27bbb489e34577514, type: 2}
+  - mushroom: {fileID: 173096, guid: 964a8180a90644f468173bb042502b0f, type: 2}
+  - rock: {fileID: 128400, guid: 9f23b26c68b154af8afd99bd5ddcef3b, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

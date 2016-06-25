@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0e608ceadf32f472fbe2f87151e84a22
+timeCreated: 1466827536
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - healthBar: {fileID: 141804, guid: 0daaa495b74fc4283ba7d78ffcf91eff, type: 2}
+  - selectedArrow: {fileID: 124910, guid: 06564bf664ee3ad46bdeb52d7035e4f0, type: 2}
+  - my_Arrow: {instanceID: 0}
+  - selectedArrow: {instanceID: 0}
+  - my_Arrow: {instanceID: 0}
+  - healthBar: {fileID: 141804, guid: 0daaa495b74fc4283ba7d78ffcf91eff, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
