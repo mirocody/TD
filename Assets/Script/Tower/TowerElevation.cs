@@ -37,7 +37,8 @@ public class TowerElevation : MonoBehaviour {
 
 						//otherTowerData.elevateRechangeRate = c.GetComponent<TowerData> ().errorAmount * towerData.elevateRate;
 						//c.GetComponent<TowerData> ().rechargeRate -= otherTowerData.elevateRechangeRate;
-						c.transform.Find("Light").GetComponent<Light> ().enabled = true;
+						if(c.transform.Find("Light"))
+							c.transform.Find("Light").GetComponent<Light> ().enabled = true;
 						otherTowerData.isElevated = true;
 					}
 
