@@ -1,21 +1,24 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour {
 
-	public Transform targetPathNode;
-	public int pathNodeIndex = 0;
+
+public class Enemy : MonoBehaviour {
 
 	protected float enemyHealth;
 	protected float max_enemyHealth;
 	protected int enemyGold;
 	protected int enemyScore;
 	protected float enemySpeed;
+	private float originSpeed;
 	protected char enemyElement;
 	public int level;
     private bool isPoisoning;
     private bool isFreezing;
-    private float remainingTime;
+		private bool isStunned;
+    private float remainingPoisonTime;
+		private float remainingFreezeTime;
+		private float remainingStunTime;
 
 	public GameObject healthBar;    //healthBar
 	protected GameObject my_health;   //initial healthBar
@@ -24,10 +27,10 @@ public class Enemy : MonoBehaviour {
     public GameObject my_Arrow;//initial Arrow.
 
 	GameObject pathGO;
+	Transform targetPathNode;
+	int pathNodeIndex = 0;
 	float pathNodeOffset = 0.2f;
 	InitialData initData;
-
-	InstantTransferEnemy instantTE;
 
 	// Use this for initialization
 	void Start () {
@@ -71,7 +74,7 @@ public class Enemy : MonoBehaviour {
 			enemySpeed= initData.enemyspeed[4];
 			enemyElement='f';
 		}
-
+		originSpeed = enemySpeed;
 		//health Bar
 		enemyHealth = max_enemyHealth;
 		my_health = (GameObject)Instantiate(healthBar, this.transform.position, this.transform.rotation);
@@ -80,7 +83,6 @@ public class Enemy : MonoBehaviour {
         my_Arrow = (GameObject)Instantiate(selectedArrow, this.transform.position, this.transform.rotation);
         my_Arrow.SetActive(false);
 
-		instantTE = GetComponent<InstantTransferEnemy> ();
 	}
 
 	void GetNextPathNode() {
@@ -106,29 +108,28 @@ public class Enemy : MonoBehaviour {
 			}
 		}
 
-		if (!instantTE.instantTransferMode) {
-			Vector3 offset = new Vector3 (Random.Range (-pathNodeOffset, pathNodeOffset), 0, Random.Range (-pathNodeOffset, pathNodeOffset));
-			Vector3 dir = targetPathNode.position - this.transform.localPosition + offset;
+		Vector3 offset = new Vector3(Random.Range(-pathNodeOffset, pathNodeOffset), 0, Random.Range(-pathNodeOffset, pathNodeOffset));
+		Vector3 dir = targetPathNode.position - this.transform.localPosition + offset;
 
-			float distThisFrame = enemySpeed * Time.deltaTime;
+		float distThisFrame = enemySpeed * Time.deltaTime;
 
-			if (dir.magnitude <= distThisFrame + pathNodeOffset) {
-				// We reached the node
-				targetPathNode = null;
-			} else {
-				// TODO: Consider ways to smooth this motion.
+		if(dir.magnitude <= distThisFrame + pathNodeOffset) {
+			// We reached the node
+			targetPathNode = null;
+		}
+		else {
+			// TODO: Consider ways to smooth this motion.
 
-				// Move towards node
-				transform.Translate (dir.normalized * distThisFrame, Space.World);
-				Quaternion targetRotation = Quaternion.LookRotation (dir);
-				this.transform.rotation = Quaternion.Lerp (this.transform.rotation, targetRotation, Time.deltaTime * Random.Range (5, 10));
-			}
+			// Move towards node
+			transform.Translate( dir.normalized * distThisFrame, Space.World );
+			Quaternion targetRotation = Quaternion.LookRotation( dir );
+			this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.deltaTime*Random.Range(5,10));
 		}
 
 		//Update Health Bar Location.
 		my_health.GetComponent<Transform>().position = new Vector3(
 			Camera.main.WorldToScreenPoint(this.transform.position).x,
-			Camera.main.WorldToScreenPoint(this.transform.position).y + 40f,
+			Camera.main.WorldToScreenPoint(this.transform.position).y+40f,
 			0
 		);
 
@@ -158,75 +159,76 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-	public virtual void TakeDamage(float damage, char element) {
+	public virtual void TakeDamage(float damage, char towerElement) {
     //set status for wood or water bullet.
-    if (element == 'm' || element == 'w') changeStatus(element);
+    if (towerElement == 'm' || towerElement == 'w'|| towerElement == 'r'|| towerElement == 'd')
+			changeStatus(towerElement);
 
 	//gold enemy
 		if(enemyElement=='g'){
-			if(element=='f'){
+			if(towerElement=='f'||enemyElement=='q'){
 				damage=2*damage;
 			}
-			else if(element=='m'){
+			else if(towerElement=='m'){
 				damage=damage/2;
             }
 		}
 	//wood enemy
 		if(enemyElement=='m'){
-			if(element=='g'){
+			if(towerElement=='g'||enemyElement=='r'||enemyElement=='d'){
 				damage=2*damage;
 			}
-			else if(element=='e'){
+			else if(towerElement=='e'){
 				damage=damage/2;
 			}
 		}
 	//earth enemy
 		if(enemyElement=='e'){
-			if(element=='m'){
+			if(towerElement=='m'||enemyElement=='q'||enemyElement=='y'){
 				damage=2*damage;
 			}
-			else if(element=='w'){
+			else if(towerElement=='w'){
 				damage=damage/2;
 			}
 		}
 	//water enemy
 		if(enemyElement=='w'){
-			if(element=='e'){
+			if(towerElement=='e'||enemyElement=='r'){
 				damage=2*damage;
 			}
-			else if(element=='f'){
+			else if(towerElement=='f'){
 				damage=damage/2;
 			}
 		}
 		//fire enemy
-		if(enemyElement=='f'){
-			if(element=='w'){
+		if(enemyElement=='f'||enemyElement=='d'||enemyElement=='y'){
+			if(towerElement=='w'){
 				damage=2*damage;
 			}
-			else if(element=='g'){
+			else if(towerElement=='g'){
 				damage=damage/2;
 			}
 		}
-		Debug.Log ("Enemy takes "+damage+"damage");
+//		Debug.Log ("Enemy takes "+damage+"damage");
 
 		enemyHealth -= damage;
 		float calc_health = enemyHealth / max_enemyHealth;
 		SetHealthBar(calc_health);
 
 		if(enemyHealth <= 0) {
-			Die(element);
+			Die(towerElement);
 		}
 	}
 
-	public virtual void Die(char element) {
+	public virtual void Die(char towerElement) {
         // TODO: Do this more safely!
-		if(element=='g'){
+		if(towerElement=='g'){
 			enemyGold=enemyGold*2;
 		}
 		ScoreManager.score += enemyScore; //+enemyscore
 		GoldManager.gold += enemyGold; //+enemygold
-        SpawnerManager.stillAlive--;
-        Debug.Log(this.transform.name+" Alive in Enemy:" + SpawnerManager.stillAlive);
+    SpawnerManager.stillAlive--;
+    Debug.Log(this.transform.name+" Alive in Enemy:" + SpawnerManager.stillAlive);
 		Destroy(gameObject);
 		Destroy(my_health);
         Destroy(my_Arrow);
@@ -236,44 +238,48 @@ public class Enemy : MonoBehaviour {
         }
 	}
 
-    public void changeStatus(char element)
+    public void changeStatus(char towerElement)
     {
-        if (element == 'm')
+        if (towerElement == 'm')
         {
             isPoisoning = true;
-            remainingTime = 5.0f;
+            remainingPoisonTime = 5.0f;
             Material test = (Material)Resources.Load("poisoning");
             transform.Find("Body").GetComponent<Renderer>().material = test;
         }
-        if (element == 'w')
+        if (towerElement == 'w'||towerElement == 'd')
         {
             if (!isFreezing) enemySpeed = 2 * enemySpeed / 3;
             isFreezing = true;
-            remainingTime = 5.0f;
+            remainingFreezeTime = 5.0f;
             Material test = (Material)Resources.Load("freezing");
             transform.Find("Body").GetComponent<Renderer>().material = test;
         }
+				if(towerElement=='r')
+				{
+						isStunned=true;
+						remainingStunTime=3.0f;
+
+				}
     }
 
-    public void checkStatus(int num)
+    public void checkStatus(int enemyLevel)
     {
         if (isPoisoning)
         {
-            if (remainingTime <= 0)
+            if (remainingPoisonTime <= 0)
             {
                 isPoisoning=false;
-                remainingTime = 0;
+                remainingPoisonTime = 0;
                 if (isFreezing) transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("freezing");
-                else transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("creep_"+num);
+                else transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("creep_"+enemyLevel);
             }
             else
             {
 				enemyHealth -= (1 * Time.deltaTime);
 
-				Debug.Log ("EnemyH:"+enemyHealth);
 
-                remainingTime -= (1 * Time.deltaTime);
-                Debug.Log(enemyHealth);
+        remainingPoisonTime -= (1 * Time.deltaTime);
 				float calc_health = enemyHealth / max_enemyHealth;
 				SetHealthBar(calc_health);
 				Debug.Log(enemyHealth);
@@ -284,19 +290,31 @@ public class Enemy : MonoBehaviour {
         }
         if (isFreezing)
         {
-            if (remainingTime <= 0)
+            if (remainingFreezeTime <= 0)
             {
                 isFreezing = false;
-                remainingTime = 0;
+                remainingFreezeTime = 0;
                 if (isPoisoning) transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("poisoning");
-                else transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("creep_"+num);
-                enemySpeed = 3 * enemySpeed / 2;
+                else transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("creep_"+enemyLevel);
+                enemySpeed = originSpeed;
             }
             else
             {
-                remainingTime -= (1 * Time.deltaTime);
-                Debug.Log(enemyHealth);
+                remainingFreezeTime -= (1 * Time.deltaTime);
             }
         }
+				if(isStunned){
+					if (remainingStunTime <= 0)
+					{
+							isStunned = false;
+							remainingStunTime = 0;
+							enemySpeed = originSpeed;
+					}
+					else
+					{
+							enemySpeed=0;
+							remainingStunTime -= (1 * Time.deltaTime);
+					}
+				}
     }
 }

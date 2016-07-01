@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour {
 	public char type;
     public bool isElevate = false;
 	InitialData initData;
+	public Vector3 destination;
 
 
 	// Use this for initialization
@@ -20,8 +21,14 @@ public class Projectile : MonoBehaviour {
 		//damage = Mathf.Pow (2, level - 1) * damage;
 		initData = GameObject.Find("SystemData").GetComponent<InitialData>();
 		getBulletData(level,type);
+		if (type == 'q') {
+			Vector3 direct;
+			direct.x = (target.position.x - this.transform.localPosition.x) * 1000F;
+			direct.y =	0F;
+			direct.z = (target.position.z - this.transform.localPosition.z) * 1000F;
+			destination = this.transform.localPosition + direct;	
+		}
 	}
- 
 	public void getBulletData(int level,char type){
 		int i=level-1;
 		int j=0;
@@ -41,67 +48,82 @@ public class Projectile : MonoBehaviour {
 			case 'w':
 				j = 4;
 				break;
+		//	case 'f+e':
+				
 			default:
 				break;
 		}
 			damage = initData.damage [j, i];
 			speed = initData.speed [j, i];
 			radius = initData.radius [j, i];
-
+		if (type == 'q') {
+			damage = 100F;
+		}
 		}
 	// Update is called once per frame
 	void Update () {
-		if(target == null) {
-			// Our enemy went away!
-			Destroy(gameObject);
-			return;
-		}
+		if (type != 'q') {
+			if (target == null) {
+				// Our enemy went away!
+				Destroy (gameObject);
+				return;
+			}
 
-		Vector3 dir = target.position - this.transform.localPosition;
+			Vector3 dir = target.position - this.transform.localPosition;
 
-		float distThisFrame = speed * Time.deltaTime;
+			float distThisFrame = speed * Time.deltaTime;
 
-		if(dir.magnitude <= distThisFrame) {
-			// We reached the node
-			DoBulletHit();
-		}
+			if (dir.magnitude <= distThisFrame) {
+				// We reached the node
+				DoBulletHit ();
+			} else {
+				// Move towards node
+				transform.Translate (dir.normalized * distThisFrame, Space.World);
+				Quaternion targetRotation = Quaternion.LookRotation (dir);
+				this.transform.rotation = Quaternion.Lerp (this.transform.rotation, targetRotation, Time.deltaTime * 5);
+			}
+		} 
 		else {
-			// Move towards node
-			transform.Translate( dir.normalized * distThisFrame, Space.World );
-			Quaternion targetRotation = Quaternion.LookRotation( dir );
-			this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.deltaTime*5);
+			float step = speed * Time.deltaTime;
+			this.transform.position = Vector3.MoveTowards(this.transform.position, destination, step);
 		}
+	}
 
+	void OnTriggerEnter(Collider other) {
+		if (this.type == 'q') {
+			if (other.tag == "Enemy" || other.tag == "StaticEnemy") {
+				Enemy enemy = other.GetComponent<Enemy> ();
+				if (enemy != null) {
+					enemy.TakeDamage (damage, type);
+					Debug.Log ("Line attack!!");
+				}
+			} else if (other.tag == "Boundary") {
+				Destroy (this.gameObject);
+			}
+		}
 	}
 
 	void DoBulletHit() {
-/*
-		if(type!='f') {
-			//target.GetComponent<Enemy>().TakeDamage(damage);
-			//target.GetComponent<Enemy>().TakeDamage(type, level, damage);
-			//damage = Mathf.Pow (2, level - 1) * damage;
+//not fire tower, no AOE Attack
+		if((type!='f') && (type!='r')&(type!='d')) {
 			target.GetComponent<Enemy>().TakeDamage(damage, type);
-			//Debug.Log ("Normal Attack takes " + damage.ToString() + " damage!");
 		}
-*/
-
-		Collider[] cols = Physics.OverlapSphere(transform.position, radius);
-		if(type=='f')	Debug.Log ("Radius is : " + radius);
-			Debug.Log ("Fire tower attack!");
+//fire tower, AOE attack
+		else{
+			int i = 0;
+			Collider[] cols = Physics.OverlapSphere(transform.position, radius);
+			Debug.Log ("AOE tower attack!");
 			foreach(Collider c in cols) {
+
 				Enemy e = c.GetComponent<Enemy>();
 				if(e != null) {
-					// TODO: You COULD do a falloff of damage based on distance, but that's rare for TD games
-					//e.GetComponent<Enemy>().TakeDamage(damage);
-					//e.GetComponent<Enemy>().TakeDamage(type, level, damage);
-					//damage = Mathf.Pow (2, level - 1) * damage;
-					target.GetComponent<Enemy>().TakeDamage(damage, type);
-					Debug.Log ("Fire attack AOE takes " + damage.ToString() + " damage!");
+					i++;
+					Debug.Log("Enemy No."+i.ToString());
+					e.GetComponent<Enemy>().TakeDamage(damage, type);
 				}
 			}
-
-
-		// TODO: Maybe spawn a cool "explosion" object here?
-		Destroy(gameObject);
+		}
+		Debug.Log("Destroy in bullethit");
+		Destroy(this.gameObject);
 	}
 }
