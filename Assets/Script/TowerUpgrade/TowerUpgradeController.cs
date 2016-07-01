@@ -121,6 +121,11 @@ public class TowerUpgradeController : MonoBehaviour {
 			Destroy(myTowerUpgradePanel);
 			Collider[] colliders;
 
+			// before destroy the tower, eliminate instant transfer panel if it exists
+			InstantTransfer it = myHit.transform.GetComponent<InstantTransfer>();
+			if (it.myInstantTransferPanel)
+				Destroy (it.myInstantTransferPanel);
+			
 			// before destroy the "Earth" tower, restore the elevate value for the surrounding towers 
 			if (myHit.transform.GetComponent<TowerData> ().towerType == 'e') {
 				colliders = Physics.OverlapSphere(myHit.transform.position, myHit.transform.GetComponent<TowerData>().elevateRadius);
@@ -130,7 +135,8 @@ public class TowerUpgradeController : MonoBehaviour {
 							if (c.GetComponent<TowerData> ().isElevated) {
 								RemoveElevatedValueAfterDestruction (c);
 								//c.GetComponent<TowerData> ().rechargeRate += otherTowerData.elevateRechangeRate;
-								c.transform.Find("Light").GetComponent<Light> ().enabled = false;
+								if(c.transform.Find("Light"))
+									c.transform.Find("Light").GetComponent<Light> ().enabled = false;
 								c.GetComponent<TowerData> ().isElevated = false;
 							}
 						}

@@ -8,9 +8,10 @@ public class InstantTransfer : MonoBehaviour {
 	public float yoffset;
 	public float outlineImageOffset = -60f;
 	public GameObject instantTransferPanel;
+	[HideInInspector]
+	public GameObject myInstantTransferPanel;
 
 	float intantTransferCDRemaining;
-	GameObject myInstantTransferPanel;
 	Collider[] colliders;
 	bool instantTransferMode;
 
