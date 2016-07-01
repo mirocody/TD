@@ -4,7 +4,7 @@ using System.Collections;
 
 public class InstantTransfer : MonoBehaviour {
 
-	public float intantTransferCD = 5.0f;
+	public float intantTransferCD = 10.0f;
 	public float yoffset;
 	public float outlineImageOffset = -60f;
 	public GameObject instantTransferPanel;

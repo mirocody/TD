@@ -4,7 +4,7 @@ using System;
 
 public class StaticEnemy : Enemy {
 
-	private int healthBarCoolDownTime;
+	private float healthBarCoolDownTime;
 
 	public GameObject towerspot;
 	public GameObject firetower;
@@ -51,8 +51,12 @@ public class StaticEnemy : Enemy {
 	
 	// Update is called once per frame
 	void Update () {
+		
 		if (healthBarCoolDownTime > 0) {
 			my_health.SetActive (true);
+			healthBarCoolDownTime -= 1*Time.deltaTime;
+		} else {
+			my_health.SetActive (false);
 		}
 
 	}
@@ -64,9 +68,9 @@ public class StaticEnemy : Enemy {
 	}
 
 	public override void TakeDamage(float damage, char element) {
-        Debug.Log("Take Damage in Static");
+		healthBarCoolDownTime = 3;
+		Debug.Log("Take Damage in Static");
 		enemyHealth -= damage;
-		healthBarCoolDownTime = 1;
 
 		float calc_health = enemyHealth / this.max_enemyHealth;
 		Debug.Log ("calc" + this.max_enemyHealth);

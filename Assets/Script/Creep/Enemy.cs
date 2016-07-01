@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-
-
 public class Enemy : MonoBehaviour {
+	
+	public Transform targetPathNode;
+	public int pathNodeIndex = 0;
 
 	protected float enemyHealth;
 	protected float max_enemyHealth;
@@ -27,10 +28,9 @@ public class Enemy : MonoBehaviour {
     public GameObject my_Arrow;//initial Arrow.
 
 	GameObject pathGO;
-	Transform targetPathNode;
-	int pathNodeIndex = 0;
 	float pathNodeOffset = 0.2f;
 	InitialData initData;
+	InstantTransferEnemy instantTE;
 
 	// Use this for initialization
 	void Start () {
@@ -83,6 +83,8 @@ public class Enemy : MonoBehaviour {
         my_Arrow = (GameObject)Instantiate(selectedArrow, this.transform.position, this.transform.rotation);
         my_Arrow.SetActive(false);
 
+		instantTE = GetComponent<InstantTransferEnemy> ();
+
 	}
 
 	void GetNextPathNode() {
@@ -107,7 +109,7 @@ public class Enemy : MonoBehaviour {
 				return;
 			}
 		}
-
+		if (!instantTE.instantTransferMode) {
 		Vector3 offset = new Vector3(Random.Range(-pathNodeOffset, pathNodeOffset), 0, Random.Range(-pathNodeOffset, pathNodeOffset));
 		Vector3 dir = targetPathNode.position - this.transform.localPosition + offset;
 
@@ -140,7 +142,7 @@ public class Enemy : MonoBehaviour {
             0
         );
     }
-
+	}
 	// Set Health Bar
 	public virtual void SetHealthBar(float calc_health)
 	{

@@ -87,6 +87,18 @@ public class GameTouchHandler : MonoBehaviour {
 				}
 			}
 
+			//check Tower Copy Canvas
+			if (getGraphicRaycastResultCount ("TCCanvas") > 0) {
+				switch (results[0].gameObject.tag)
+				{
+				case "TowerCopy":
+					results [0].gameObject.GetComponent<TowerCopyPanel> ().isTowerCopyTriggered = true;
+					return;
+				default:
+					break;
+				}
+			}
+
             //Check whether selectionPanel is clicked.
             if (getGraphicRaycastResultCount("TSCanvas") > 0)
             {
@@ -209,6 +221,8 @@ public class GameTouchHandler : MonoBehaviour {
 			isGameEnvironmentTapped = false;
 			if (results != null && results.Count > 0)
 				results [0].gameObject.GetComponent<InstantTransferPanel> ().isInstantTransferTriggered = false;
+			if (results != null && results.Count > 0)
+				results [0].gameObject.GetComponent<TowerCopyPanel> ().isTowerCopyTriggered = false;
 		}
 	}
 
