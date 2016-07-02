@@ -56,6 +56,36 @@ public class GameTouchHandler : MonoBehaviour {
     [HideInInspector]
     public bool isEnemyTapped;
 
+	[HideInInspector]
+	public bool isEarthElementSelected;
+
+	[HideInInspector]
+	public bool isFireElementSelected;
+
+	[HideInInspector]
+	public bool isWaterElementSelected;
+
+	[HideInInspector]
+	public bool isMetalElementSelected;
+
+	[HideInInspector]
+	public bool isWoodElementSelected;
+
+	[HideInInspector]
+	public bool isEarthElementCanceled;
+
+	[HideInInspector]
+	public bool isFireElementCanceled;
+
+	[HideInInspector]
+	public bool isWaterElementCanceled;
+
+	[HideInInspector]
+	public bool isMetalElementCanceled;
+
+	[HideInInspector]
+	public bool isWoodElementCanceled;
+
     [HideInInspector]
 	public RaycastHit hit;
 
@@ -91,11 +121,52 @@ public class GameTouchHandler : MonoBehaviour {
 			if (getGraphicRaycastResultCount ("TCCanvas") > 0) {
 				switch (results[0].gameObject.tag)
 				{
-				case "TowerCopy":
-					results [0].gameObject.GetComponent<TowerCopyPanel> ().isTowerCopyTriggered = true;
-					return;
-				default:
-					break;
+					case "TowerCopy":
+						results [0].gameObject.GetComponent<TowerCopyPanel> ().isTowerCopyTriggered = true;
+						return;
+					default:
+						break;
+				}
+			}
+
+			//Check whether Elements Container Panel is clicked.
+			if (getGraphicRaycastResultCount("ECCanvas") > 0)
+			{
+				switch (results[0].gameObject.tag)
+				{
+					case "EarthElement":
+						isEarthElementSelected = true;
+						return;
+					case "FireElement":
+						isFireElementSelected = true;
+						return;
+					case "WaterElement":
+						isWaterElementSelected = true;
+						return;
+					case "MetalElement":
+						isMetalElementSelected = true;
+						return;
+					case "WoodElement":
+						isWoodElementSelected = true;
+						return;
+					case "EarthElementCancel":
+						isEarthElementCanceled = true;
+						Debug.Log ("EarthElement Cancel is tapped!");
+						return;
+					case "FireElementCancel":
+						isFireElementCanceled = true;
+						return;
+					case "WaterElementCancel":
+						isWaterElementCanceled = true;
+						return;
+					case "MetalElementCancel":
+						isMetalElementCanceled = true;
+						return;
+					case "WoodElementCancel":
+						isWoodElementCanceled = true;
+						return;
+					default:
+						break;
 				}
 			}
 
@@ -209,6 +280,16 @@ public class GameTouchHandler : MonoBehaviour {
 			isWaterTowerSelected = false;
 			isMetalTowerSelected = false;
 			isWoodTowerSelected = false;
+			isEarthElementSelected = false;
+			isFireElementSelected = false;
+			isWaterElementSelected = false;
+			isMetalElementSelected = false;
+			isWoodElementSelected = false;
+			isEarthElementCanceled = false;
+			isFireElementCanceled = false;
+			isWaterElementCanceled = false;
+			isMetalElementCanceled = false;
+			isWoodElementCanceled = false;
 			isTowerSpotTapped = false;
             isPauseTapped = false;
             isCloseTapped = false;

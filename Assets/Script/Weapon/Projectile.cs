@@ -123,7 +123,6 @@ public class Projectile : MonoBehaviour {
 				}
 			}
 		}
-		Debug.Log("Destroy in bullethit");
 		Destroy(this.gameObject);
 	}
 }

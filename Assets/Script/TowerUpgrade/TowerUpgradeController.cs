@@ -22,15 +22,17 @@ public class TowerUpgradeController : MonoBehaviour {
 	TowerBuildController tBController;
 	RaycastHit myHit;
 	GameObject myTowerUpgradePanel;
+	TowerCombo towerCombo;
 	int buildCost;
 
 	void Start () {
 		gameTouch = GameObject.Find ("GameTouch").GetComponent<GameTouchHandler> ();
 		tBController = GameObject.Find ("TowerBuild").GetComponent<TowerBuildController> ();
+		towerCombo = GameObject.Find("TowerCombo").GetComponent<TowerCombo>();
 	}
 	
 	void Update () {
-		if (gameTouch.isTowerBodyTapped) {
+		if (gameTouch.isTowerBodyTapped && !towerCombo.isTowerComboMode) {
 			myHit = gameTouch.hit;
 			myHit.transform.gameObject.GetComponent<TowerData> ().init ();
 			upgradeCost = myHit.transform.gameObject.GetComponent<TowerData> ().upgradeCost;
@@ -44,16 +46,18 @@ public class TowerUpgradeController : MonoBehaviour {
 				Destroy (existingTSPanel);
 			}
 
-			myTowerUpgradePanel = (GameObject)Instantiate(towerUpgradePanel, 
-				new Vector3(
-					Camera.main.WorldToScreenPoint(myHit.transform.position).x, //myHit.transform.position.x,
-					Camera.main.WorldToScreenPoint(myHit.transform.position).y + yOffset, //myHit.transform.position.y + yOffset,
-					0 //myHit.transform.position.z
-				),
-				Quaternion.identity //myHit.transform.rotation
-			);
+			if (myHit.transform.gameObject.GetComponent<TowerData> ().level < 3) {
+				myTowerUpgradePanel = (GameObject)Instantiate (towerUpgradePanel, 
+					new Vector3 (
+						Camera.main.WorldToScreenPoint (myHit.transform.position).x, //myHit.transform.position.x,
+						Camera.main.WorldToScreenPoint (myHit.transform.position).y + yOffset, //myHit.transform.position.y + yOffset,
+						0 //myHit.transform.position.z
+					),
+					Quaternion.identity //myHit.transform.rotation
+				);
 
-			myTowerUpgradePanel.SetActive (true);
+				myTowerUpgradePanel.SetActive (true);
+			}
 		}
 
 		if (gameTouch.isTowerUpgradeConfirm) 
@@ -123,7 +127,7 @@ public class TowerUpgradeController : MonoBehaviour {
 
 			// before destroy the tower, eliminate instant transfer panel if it exists
 			InstantTransfer it = myHit.transform.GetComponent<InstantTransfer>();
-			if (it.myInstantTransferPanel)
+			if (it != null && it.myInstantTransferPanel != null)
 				Destroy (it.myInstantTransferPanel);
 			
 			// before destroy the "Earth" tower, restore the elevate value for the surrounding towers 

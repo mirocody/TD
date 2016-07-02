@@ -229,8 +229,8 @@ public class Enemy : MonoBehaviour {
 		}
 		ScoreManager.score += enemyScore; //+enemyscore
 		GoldManager.gold += enemyGold; //+enemygold
-    SpawnerManager.stillAlive--;
-    Debug.Log(this.transform.name+" Alive in Enemy:" + SpawnerManager.stillAlive);
+    	SpawnerManager.stillAlive--;
+    	//Debug.Log(this.transform.name+" Alive in Enemy:" + SpawnerManager.stillAlive);
 		Destroy(gameObject);
 		Destroy(my_health);
         Destroy(my_Arrow);
@@ -284,7 +284,7 @@ public class Enemy : MonoBehaviour {
         remainingPoisonTime -= (1 * Time.deltaTime);
 				float calc_health = enemyHealth / max_enemyHealth;
 				SetHealthBar(calc_health);
-				Debug.Log(enemyHealth);
+				//Debug.Log(enemyHealth);
 				if(enemyHealth <= 0) {
 					Die('m');
 				}

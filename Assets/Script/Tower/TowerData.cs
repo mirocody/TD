@@ -43,35 +43,7 @@ public class TowerData : MonoBehaviour
     public float elevateRadius = 0f;
 
     public bool isElevated = false;
-/*
-    public char getTowerType()
-    {
-        char type = '?';
 
-        if (gameObject.tag == "GoldTower")
-            type = 'g';
-        else if (gameObject.tag == "WoodTower")
-            type = 'm';
-        else if (gameObject.tag == "WaterTower")
-            type = 'w';
-        else if (gameObject.tag == "FireTower")
-            type = 'f';
-        else if (gameObject.tag == "EarthTower")
-            type = 'e';
-        else
-            Debug.Log("Tower Type not found!");
-
-        return type;
-    }
-  */
-
-    void Start(){
-//      initData=GameObject.Find("SystemData").GetComponent<InitialData>();
-//      getTowerData(level,towerType);
-
-
-      Debug.Log("TowerData");
-    }
     public void init(){
       initData=GameObject.Find("SystemData").GetComponent<InitialData>();
       getTowerData(level,towerType);
@@ -100,7 +72,7 @@ public class TowerData : MonoBehaviour
           break;
         }
 //Assign date to certain level and element tower
-    Debug.Log("I is "+i+"J is "+j);
+    //Debug.Log("I is "+i+"J is "+j);
           range=initData.range[j,i];
           cost=initData.cost[j,i];
           upgradeCost=initData.upgradeCost[j,i];
@@ -111,13 +83,5 @@ public class TowerData : MonoBehaviour
           rechargeRate=initData.rechargeRate[j,i];
 //          elevateRange=initData.elevateRange[i,j];
 //          elevateRadius=initData.elevateRadius[i,j];
-
-
-
-
-
-
-
     }
-
 }

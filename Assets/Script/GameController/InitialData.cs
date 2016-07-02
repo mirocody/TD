@@ -63,9 +63,9 @@ public class InitialData : MonoBehaviour
 		// read enemy data from table_enemy
 		string[] enemy = table_enemy.text.Split('\n');
 		for (int i = 0; i < enemy.Length - 1; i++) {
-			Debug.Log("test table_enemy");
-			Debug.Log (i);
-			Debug.Log (enemyhealth.Length);
+			//Debug.Log("test table_enemy");
+			//Debug.Log (i);
+			//Debug.Log (enemyhealth.Length);
 			String[] splits = enemy [i+1].Split(',');
 			enemyhealth[i] = int.Parse(splits[0]);
 			enemygold[i] = int.Parse(splits[1]);
@@ -78,7 +78,7 @@ public class InitialData : MonoBehaviour
 		string[] tower_bullet = table_tower_bullet.text.Split ('\n');
 		for (int j = 0; j < 3; j++) {
 			for (int i = 0; i < 5; i++) {
-				Debug.Log("test table_tower");
+				//Debug.Log("test table_tower");
 				String[] splits = tower_bullet[i+1+6*j].Split(',');
 
 				range[i,j] = int.Parse(splits[0]);

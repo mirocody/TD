@@ -74,7 +74,7 @@ public class NewMap : MonoBehaviour {
 			int j = 0;
 			foreach (string choice in map_choice) {
 				map [i-1, j] = int.Parse (choice);
-				Debug.Log (i + "," + j + "\n");
+				//Debug.Log (i + "," + j + "\n");
 				j++;
 			}
 		}

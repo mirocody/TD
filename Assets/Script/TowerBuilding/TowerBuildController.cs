@@ -16,9 +16,12 @@ public class TowerBuildController : MonoBehaviour {
 	RaycastHit myHit;
 	GameObject selectedTower;
 	GameObject myTowerSelectionPanel;
+	TowerCombo towerCombo;
 
 	void Start () {
 		gameTouch = GameObject.Find("GameTouch").GetComponent<GameTouchHandler> ();
+		towerCombo = GameObject.Find("TowerCombo").GetComponent<TowerCombo>();
+
 		// pass the build cost to TowerSelectionPanel.cs
 		costs = new int[towers.Length];
 		for (int i = 0; i < towers.Length; i++) {
@@ -29,7 +32,7 @@ public class TowerBuildController : MonoBehaviour {
 
 	void Update () {
 
-        if (gameTouch.isTowerSpotTapped)
+		if (gameTouch.isTowerSpotTapped && !towerCombo.isTowerComboMode)
         {
             myHit = gameTouch.hit;
             if (!occupiedTowerSpots.Contains(myHit.collider.name))
@@ -54,6 +57,7 @@ public class TowerBuildController : MonoBehaviour {
 			Destroy(myTowerSelectionPanel);
             if (canBuildTower ()) {
 				GameObject myTower=(GameObject)Instantiate (selectedTower, myHit.transform.position, myHit.transform.rotation);
+				myTower.transform.Rotate(0, 180, 0);
 				GoldManager.gold -= myTower.GetComponent<TowerData> ().cost;
 				occupiedTowerSpots.Add (myHit.collider.name);
 			}
