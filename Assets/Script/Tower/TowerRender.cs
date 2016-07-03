@@ -14,7 +14,7 @@ public class TowerRender : MonoBehaviour {
 
 	TowerData myTowerData;
 	TowerCombo towerCombo;
-	string resPath;
+//	string resPath;
 
 	Material baseMat;
 	Material baseDecoMat;
@@ -22,32 +22,34 @@ public class TowerRender : MonoBehaviour {
 	Material topMat;
 	Material topDecoMat;
 
+	Material transMat;
+
 	// Use this for initialization
 	void Start () {
 		myTowerData = GetComponent<TowerData> ();
 		char myTowerType = myTowerData.towerType;
-		switch (myTowerType) {
-			case 'e':
-				resPath = "Towers/EarthTower/";
-				break;
-			case 'f':
-				resPath = "Towers/FireTower/";
-				break;
-			case 'g':
-				resPath = "Towers/MetalTower/";
-				break;
-			case 'w':
-				resPath = "Towers/WaterTower/";
-				break;
-			case 'm':
-				resPath = "Towers/WoodTower/";
-				break;
-			case 'z':
-				resPath = "Towers/FireEarthTower/";
-				break;
-			default:
-				break;
-		}
+//		switch (myTowerType) {
+//			case 'e':
+//				resPath = "Towers/EarthTower/";
+//				break;
+//			case 'f':
+//				resPath = "Towers/FireTower/";
+//				break;
+//			case 'g':
+//				resPath = "Towers/MetalTower/";
+//				break;
+//			case 'w':
+//				resPath = "Towers/WaterTower/";
+//				break;
+//			case 'm':
+//				resPath = "Towers/WoodTower/";
+//				break;
+//			case 'z':
+//				resPath = "Towers/FireEarthTower/";
+//				break;
+//			default:
+//				break;
+//		}
 
 		towerCombo = GameObject.Find ("TowerCombo").GetComponent<TowerCombo> ();
 
@@ -74,26 +76,33 @@ public class TowerRender : MonoBehaviour {
 
 		if (isTowerToBeInactive) {
 			// disable the unqualified tower
-			Material BaseTransMat = (Material)Resources.Load(resPath + "BaseTransMat");
+			//Material BaseTransMat = (Material)Resources.Load(resPath + "BaseTransMat");
+			Material transMat = (Material)Resources.Load("Towers/TransMat");
+
 			if (transform.Find("Tower_Base/Tower_Base"))
-				transform.Find("Tower_Base/Tower_Base").GetComponent<Renderer>().material = BaseTransMat;
-
-			Material BaseDecoTransMat = (Material)Resources.Load(resPath + "BaseDecoTransMat");
-			if (transform.Find("Tower_Base/Tower_Base_Deco"))
-				transform.Find("Tower_Base/Tower_Base_Deco").GetComponent<Renderer>().material = BaseDecoTransMat;
+				//transform.Find("Tower_Base/Tower_Base").GetComponent<Renderer>().material = BaseTransMat;
+				transform.Find("Tower_Base/Tower_Base").GetComponent<Renderer>().material = transMat;
 			
-			Material ShieldTransMat = (Material)Resources.Load(resPath + "ShieldTransMat");
+			//Material BaseDecoTransMat = (Material)Resources.Load(resPath + "BaseDecoTransMat");
+			if (transform.Find("Tower_Base/Tower_Base_Deco"))
+				//transform.Find("Tower_Base/Tower_Base_Deco").GetComponent<Renderer>().material = BaseDecoTransMat;
+				transform.Find("Tower_Base/Tower_Base_Deco").GetComponent<Renderer>().material = transMat;
+			
+			//Material ShieldTransMat = (Material)Resources.Load(resPath + "ShieldTransMat");
 			if (transform.Find("Tower_Base/Shield"))
-				transform.Find("Tower_Base/Shield").GetComponent<Renderer>().material = ShieldTransMat;
-
-			Material TopTransMat = (Material)Resources.Load(resPath + "TopTransMat");
+				//transform.Find("Tower_Base/Shield").GetComponent<Renderer>().material = ShieldTransMat;
+				transform.Find("Tower_Base/Shield").GetComponent<Renderer>().material = transMat;
+			
+			//Material TopTransMat = (Material)Resources.Load(resPath + "TopTransMat");
 			if (transform.Find("Tower_Top/Tower_Top"))
-				transform.Find("Tower_Top/Tower_Top").GetComponent<Renderer>().material = TopTransMat;
-
-			Material TopDecoTransMat = (Material)Resources.Load(resPath + "TopDecoTransMat");
+				//transform.Find("Tower_Top/Tower_Top").GetComponent<Renderer>().material = TopTransMat;
+				transform.Find("Tower_Top/Tower_Top").GetComponent<Renderer>().material = transMat;
+			
+			//Material TopDecoTransMat = (Material)Resources.Load(resPath + "TopDecoTransMat");
 			if (transform.Find("Tower_Top/Tower_Top_Deco"))
-				transform.Find("Tower_Top/Tower_Top_Deco").GetComponent<Renderer>().material = TopDecoTransMat;
-
+				//transform.Find("Tower_Top/Tower_Top_Deco").GetComponent<Renderer>().material = TopDecoTransMat;
+				transform.Find("Tower_Top/Tower_Top_Deco").GetComponent<Renderer>().material = transMat;
+			
 			if (transform.Find ("Light"))
 				transform.Find ("Light").gameObject.SetActive (false);
 

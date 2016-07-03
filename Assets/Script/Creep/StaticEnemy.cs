@@ -103,17 +103,23 @@ public class StaticEnemy : Enemy {
 		Debug.Log ("InstantiateNewGameObject" + choice);
 		if (choice >= 97) {
 			temp = (GameObject)Instantiate (firetower, position, this.transform.rotation);
+			temp.transform.Rotate(0, 180, 0);
 		} else if (choice >= 94) {
 			temp = (GameObject)Instantiate (watertower, position, this.transform.rotation);
+			temp.transform.Rotate(0, 180, 0);
 		} else if (choice >= 91) {
 			temp = (GameObject)Instantiate (earthtower, position, this.transform.rotation);
+			temp.transform.Rotate(0, 180, 0);
 		} else if (choice >= 88) {
 			temp = (GameObject)Instantiate (woodtower, position, this.transform.rotation);
+			temp.transform.Rotate(0, 180, 0);
 		} else if (choice >= 85) {
 			temp = (GameObject)Instantiate (metaltower, position, this.transform.rotation);
+			temp.transform.Rotate(0, 180, 0);
 		} else {
 			Debug.Log ("Instantiate of 95");
 			temp = (GameObject)Instantiate (towerspot, position, this.transform.rotation);
+			temp.transform.Rotate(0, 180, 0);
 			Debug.Log ("Instantiate of 95!!");
 		}
 

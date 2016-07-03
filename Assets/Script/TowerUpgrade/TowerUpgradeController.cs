@@ -18,6 +18,9 @@ public class TowerUpgradeController : MonoBehaviour {
 	[HideInInspector]
 	public int upgradeCost;
 
+	[HideInInspector]
+	public int towerlevel;
+
 	GameTouchHandler gameTouch;
 	TowerBuildController tBController;
 	RaycastHit myHit;
@@ -36,6 +39,7 @@ public class TowerUpgradeController : MonoBehaviour {
 			myHit = gameTouch.hit;
 			myHit.transform.gameObject.GetComponent<TowerData> ().init ();
 			upgradeCost = myHit.transform.gameObject.GetComponent<TowerData> ().upgradeCost;
+			towerlevel = myHit.transform.gameObject.GetComponent<TowerData> ().level;
 			buildCost = myHit.transform.gameObject.GetComponent<TowerData> ().cost;
 
 			// Find and Destroy existing upgrade panel(s) before instantiating new ones
@@ -46,18 +50,16 @@ public class TowerUpgradeController : MonoBehaviour {
 				Destroy (existingTSPanel);
 			}
 
-			if (myHit.transform.gameObject.GetComponent<TowerData> ().level < 3) {
-				myTowerUpgradePanel = (GameObject)Instantiate (towerUpgradePanel, 
-					new Vector3 (
-						Camera.main.WorldToScreenPoint (myHit.transform.position).x, //myHit.transform.position.x,
-						Camera.main.WorldToScreenPoint (myHit.transform.position).y + yOffset, //myHit.transform.position.y + yOffset,
-						0 //myHit.transform.position.z
-					),
-					Quaternion.identity //myHit.transform.rotation
-				);
+			myTowerUpgradePanel = (GameObject)Instantiate (towerUpgradePanel, 
+				new Vector3 (
+					Camera.main.WorldToScreenPoint (myHit.transform.position).x, //myHit.transform.position.x,
+					Camera.main.WorldToScreenPoint (myHit.transform.position).y + yOffset, //myHit.transform.position.y + yOffset,
+					0 //myHit.transform.position.z
+				),
+				Quaternion.identity //myHit.transform.rotation
+			);
 
-				myTowerUpgradePanel.SetActive (true);
-			}
+			myTowerUpgradePanel.SetActive (true);
 		}
 
 		if (gameTouch.isTowerUpgradeConfirm) 
@@ -169,7 +171,7 @@ public class TowerUpgradeController : MonoBehaviour {
 		}
 	}
 
-	public bool canUpgradeTower()
+	bool canUpgradeTower()
 	{
 		return GoldManager.gold >= upgradeCost && 
 			myHit.transform.GetComponent<TowerData>().level < MetalTowers.GetLength(0);

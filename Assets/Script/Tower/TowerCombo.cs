@@ -50,7 +50,7 @@ public class TowerCombo : MonoBehaviour {
 			TowerComboInit ('f');
 		}
 
-		if (isTowerComboMode /*&& !TowerCombinationCanceled()*/)
+		if (isTowerComboMode)
 			TowerCombination (candidateTowerType);
 
 		if (TowerCombinationCanceled())
@@ -143,6 +143,9 @@ public class TowerCombo : MonoBehaviour {
 	void TowerComboExit()
 	{
 		isTowerComboMode = false;
+		// fix bug: upgrade panel will pop up after exiting tower combo mode
+		gameTouch.isTowerBodyTapped = false;
+
 		candidateTowerType = '\0';
 		towerObjs = GameObject.FindGameObjectsWithTag ("TowerBody");
 		foreach (GameObject towerObj in towerObjs) {

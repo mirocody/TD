@@ -18,19 +18,16 @@ public class TowerUpgradePanel : MonoBehaviour {
 
 	void Update()
 	{
-		//scaleTowerUpgradePanel2Camera ();
-		// set the upgrade cost
-		costTxt.GetComponent<Text> ().text = towerUpgradeController.upgradeCost.ToString();
-		if (towerUpgradeController.canUpgradeTower ()) {
-			// Set TowerUpgradeBtn interactable
-			//towerUpgradeBtn.GetComponent<Button> ().interactable = true;
-			towerUpgradeImg.GetComponent<Image> ().color = new Color (1f, 1f, 1f, 1f);
+		if (towerUpgradeController.towerlevel < 3) {
+			costTxt.GetComponent<Text> ().text = towerUpgradeController.upgradeCost.ToString ();
+			if (GoldManager.gold >= towerUpgradeController.upgradeCost) {
+				towerUpgradeImg.GetComponent<Image> ().color = new Color (1f, 1f, 1f, 1f);
+			} else {
+				towerUpgradeImg.GetComponent<Image> ().color = new Color (1f, 1f, 1f, 0.5f);
+			}
 		} else {
-			// otherwise disable it
-			//towerUpgradeBtn.GetComponent<Button> ().interactable = false;
-			towerUpgradeImg.GetComponent<Image>().color = new Color (1f, 1f, 1f, 0.5f);
+			costTxt.GetComponent<Text> ().text = "";
+			towerUpgradeImg.GetComponent<Image> ().color = new Color (1f, 1f, 1f, 0.5f);
 		}
 	}
-
-
 }
