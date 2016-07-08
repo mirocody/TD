@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour {
 	public int level;
     private bool isPoisoning;
     private bool isFreezing;
-		private bool isStunned;
+	private  bool isStunned;
     private float remainingPoisonTime;
 		private float remainingFreezeTime;
 		private float remainingStunTime;
@@ -122,7 +122,8 @@ public class Enemy : MonoBehaviour {
 				return;
 			}
 		}
-		if (!instantTE.instantTransferMode) {
+
+		if (!instantTE.instantTransferMode && !isStunned) {
 			Vector3 offset = new Vector3(Random.Range(-pathNodeOffset, pathNodeOffset), 0, Random.Range(-pathNodeOffset, pathNodeOffset));
 			Vector3 dir = targetPathNode.position - this.transform.localPosition + offset;
 
@@ -141,13 +142,6 @@ public class Enemy : MonoBehaviour {
 				this.transform.rotation = Quaternion.Lerp(this.transform.rotation, targetRotation, Time.deltaTime*Random.Range(5,10));
 			}
 
-			//Update Health Bar Location.
-			my_health.GetComponent<Transform>().position = new Vector3(
-				Camera.main.WorldToScreenPoint(this.transform.position).x,
-				Camera.main.WorldToScreenPoint(this.transform.position).y+40f,
-				0
-			);
-
 	        //Update Arrow Location.
 	        my_Arrow.GetComponent<Transform>().position = new Vector3(
 	            Camera.main.WorldToScreenPoint(this.transform.position).x,
@@ -162,7 +156,15 @@ public class Enemy : MonoBehaviour {
 				0
 			);
     	}
+
+		//Update Health Bar Location.
+		my_health.GetComponent<Transform>().position = new Vector3(
+			Camera.main.WorldToScreenPoint(this.transform.position).x,
+			Camera.main.WorldToScreenPoint(this.transform.position).y+40f,
+			0
+		);
 	}
+
 	// Set Health Bar
 	public virtual void SetHealthBar(float calc_health)
 	{
@@ -301,13 +303,13 @@ public class Enemy : MonoBehaviour {
                 remainingPoisonTime = 0;
                 if (isFreezing) transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("freezing");
                 else transform.Find("Body").GetComponent<Renderer>().material = (Material)Resources.Load("creep_"+enemyLevel);
-				my_star.SetActive (false);
+				//my_star.SetActive (false);
 			}
             else
             {
 				enemyHealth -= ((float)poisonDamage * Time.deltaTime);
 				//set dizzy star to be active
-				my_star.SetActive(true);
+				//my_star.SetActive(true);
 
         		remainingPoisonTime -= (1 * Time.deltaTime);
 				float calc_health = enemyHealth / max_enemyHealth;
@@ -318,7 +320,8 @@ public class Enemy : MonoBehaviour {
 							}
             }
         }
-        if (isFreezing)
+        
+		if (isFreezing)
         {
             if (remainingFreezeTime <= 0)
             {
@@ -333,19 +336,24 @@ public class Enemy : MonoBehaviour {
                 remainingFreezeTime -= (1 * Time.deltaTime);
             }
         }
-				if(isStunned){
-					if (remainingStunTime <= 0)
-					{
-							isStunned = false;
-							remainingStunTime = 0;
-							enemySpeed = originSpeed;
-					}
-					else
-					{
-							Debug.Log("Speed 0!!");
-							enemySpeed=0;
-							remainingStunTime -= (1 * Time.deltaTime);
-					}
-				}
+
+		if(isStunned)
+		{
+			if (remainingStunTime <= 0)
+			{
+					isStunned = false;
+					remainingStunTime = 0;
+					enemySpeed = originSpeed;
+					my_star.SetActive (false);
+			}
+			else
+			{
+					enemySpeed=0;
+					remainingStunTime -= (1 * Time.deltaTime);
+					my_star.SetActive (true);
+					Debug.Log("Rotation starts");
+					transform.Rotate(Vector3.up * Time.deltaTime * 150);
+			}
+		}
     }
 }

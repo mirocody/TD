@@ -34,28 +34,28 @@ public class TowerCombo : MonoBehaviour {
 
 		else if (gameTouch.isFireElementSelected) {
 			candidateTowerType = 'e';
-            if (InitialData.fireCardNum > 0) { TowerComboInit('e'); changeElementCardPanel(1); }
+			if (InitialData.fireCardNum > 0) { TowerComboInit(candidateTowerType); changeElementCardPanel(1); }
 		}
 
 		else if (gameTouch.isWaterElementSelected) {
 			candidateTowerType = 'm';
-            if (InitialData.waterCardNum > 0) { TowerComboInit('m'); changeElementCardPanel(2); }
+			if (InitialData.waterCardNum > 0) { TowerComboInit(candidateTowerType); changeElementCardPanel(2); }
 		}
 
 		else if (gameTouch.isMetalElementSelected) {
 			candidateTowerType = 'w';
-            if (InitialData.metalCardNum > 0) { TowerComboInit('w'); changeElementCardPanel(3); }
+			if (InitialData.metalCardNum > 0) { TowerComboInit(candidateTowerType); changeElementCardPanel(3); }
 		}
 
 		else if (gameTouch.isWoodElementSelected) {
 			candidateTowerType = 'f';
-            if (InitialData.woodCardNum > 0) { TowerComboInit('f'); changeElementCardPanel(4); }
+			if (InitialData.woodCardNum > 0) { TowerComboInit(candidateTowerType); changeElementCardPanel(4); }
 		}
 
         else if (TowerCombinationCanceled())
             TowerComboExit();
 
-        if (isTowerComboMode /*&& !TowerCombinationCanceled()*/)
+        if (isTowerComboMode)
 			TowerCombination (candidateTowerType);
 
 	}
@@ -81,8 +81,8 @@ public class TowerCombo : MonoBehaviour {
 			return true;
 		}
 		return false;*/
-        if (gameTouch.isScreenTouched && !gameTouch.isTowerBodyTapped) return true;
-        else if (gameTouch.isScreenTouched && gameTouch.isTowerBodyTapped)
+		if (isTowerComboMode && gameTouch.isScreenTouched && !gameTouch.isTowerBodyTapped) return true;
+		else if (isTowerComboMode && gameTouch.isScreenTouched && gameTouch.isTowerBodyTapped)
         {
             myHit = gameTouch.hit;
             if (myHit.transform.GetComponent<TowerData>().towerType == candidateTowerType
@@ -171,6 +171,10 @@ public class TowerCombo : MonoBehaviour {
 	void TowerComboExit()
 	{
 		isTowerComboMode = false;
+
+		//Fix bug - tower update panel appears after tower combiniation completes
+		gameTouch.isTowerBodyTapped = false;
+
 		candidateTowerType = '\0';
 		towerObjs = GameObject.FindGameObjectsWithTag ("TowerBody");
 		foreach (GameObject towerObj in towerObjs) {

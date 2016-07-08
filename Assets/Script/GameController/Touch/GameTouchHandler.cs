@@ -112,6 +112,38 @@ public class GameTouchHandler : MonoBehaviour {
             //Ray camRay = Camera.main.ScreenPointToRay (Input.GetTouch (0).position);
             Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+			//Check whether any HUD component is clicked.
+			if (getGraphicRaycastResultCount("HUD") > 0)
+			{
+				Debug.Log(results[0].gameObject.name);
+				switch (results[0].gameObject.tag)
+				{
+				case "Pause":
+					isPauseTapped = true;
+					return;
+				case "Close":
+					isCloseTapped = true;
+					return;
+				case "Restart":
+					isRestartTapped = true;
+					return;
+				case "Quit":
+					isQuitTapped = true;
+					return;
+				case "CheckBox":
+					isCheckBoxTapped = true;
+					return;
+				case "CheckMark":
+					isCheckBoxTapped = true;
+					return;
+				case "MenuButton":
+					isMenuButtonTapped = true;
+					return;
+				default:
+					break;
+				}
+			}
+
 			//check Instant Transfer Canvas
 			if (getGraphicRaycastResultCount ("ITCanvas") > 0) {
 				switch (results[0].gameObject.tag)
@@ -136,44 +168,19 @@ public class GameTouchHandler : MonoBehaviour {
 				}
 			}
 
-			//Check whether Elements Container Panel is clicked.
-			if (getGraphicRaycastResultCount("ECCanvas") > 0)
+			//Check Update Canvas.
+			if (getGraphicRaycastResultCount("TUCanvas") >= 1)
 			{
 				switch (results[0].gameObject.tag)
 				{
-					case "EarthElement":
-						isEarthElementSelected = true;
-						return;
-					case "FireElement":
-						isFireElementSelected = true;
-						return;
-					case "WaterElement":
-						isWaterElementSelected = true;
-						return;
-					case "MetalElement":
-						isMetalElementSelected = true;
-						return;
-					case "WoodElement":
-						isWoodElementSelected = true;
-						return;
-					case "EarthElementCancel":
-						isEarthElementCanceled = true;
-						Debug.Log ("EarthElement Cancel is tapped!");
-						return;
-					case "FireElementCancel":
-						isFireElementCanceled = true;
-						return;
-					case "WaterElementCancel":
-						isWaterElementCanceled = true;
-						return;
-					case "MetalElementCancel":
-						isMetalElementCanceled = true;
-						return;
-					case "WoodElementCancel":
-						isWoodElementCanceled = true;
-						return;
-					default:
-						break;
+				case "TowerUpgrade":
+					isTowerUpgradeConfirm = true;
+					return;
+				case "TowerSold":
+					isTowerSoldConfirm = true;
+					return;
+				default:
+					break;
 				}
 			}
 
@@ -202,53 +209,46 @@ public class GameTouchHandler : MonoBehaviour {
                 }
             }
 
-            //Check whether any HUD component is clicked.
-            if (getGraphicRaycastResultCount("HUD") > 0)
-            {
-                Debug.Log(results[0].gameObject.name);
-                switch (results[0].gameObject.tag)
-                {
-                    case "Pause":
-                        isPauseTapped = true;
-                        return;
-                    case "Close":
-                        isCloseTapped = true;
-                        return;
-                    case "Restart":
-                        isRestartTapped = true;
-                        return;
-                    case "Quit":
-                        isQuitTapped = true;
-                        return;
-                    case "CheckBox":
-                        isCheckBoxTapped = true;
-                        return;
-                    case "CheckMark":
-                        isCheckBoxTapped = true;
-                        return;
-                    case "MenuButton":
-                        isMenuButtonTapped = true;
-                        return;
-                    default:
-                        break;
-                }
-            }
-
-            //Check Update Canvas.
-            if (getGraphicRaycastResultCount("TUCanvas") >= 1)
-            {
-                switch (results[0].gameObject.tag)
-                {
-                    case "TowerUpgrade":
-                        isTowerUpgradeConfirm = true;
-                        return;
-                    case "TowerSold":
-                        isTowerSoldConfirm = true;
-                        return;
-                    default:
-                        break;
-                }
-            }
+			//Check whether Elements Container Panel is clicked.
+			if (getGraphicRaycastResultCount("ECCanvas") > 0)
+			{
+				switch (results[0].gameObject.tag)
+				{
+				case "EarthElement":
+					isEarthElementSelected = true;
+					return;
+				case "FireElement":
+					isFireElementSelected = true;
+					return;
+				case "WaterElement":
+					isWaterElementSelected = true;
+					return;
+				case "MetalElement":
+					isMetalElementSelected = true;
+					return;
+				case "WoodElement":
+					isWoodElementSelected = true;
+					return;
+				case "EarthElementCancel":
+					isEarthElementCanceled = true;
+					Debug.Log ("EarthElement Cancel is tapped!");
+					return;
+				case "FireElementCancel":
+					isFireElementCanceled = true;
+					return;
+				case "WaterElementCancel":
+					isWaterElementCanceled = true;
+					return;
+				case "MetalElementCancel":
+					isMetalElementCanceled = true;
+					return;
+				case "WoodElementCancel":
+					isWoodElementCanceled = true;
+					return;
+				default:
+					break;
+				}
+			}
 
             if (Physics.Raycast (camRay, out hit, camRayLength)) {
 				switch (hit.collider.tag) {
