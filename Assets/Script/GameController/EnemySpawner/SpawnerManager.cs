@@ -34,7 +34,7 @@ public class SpawnerManager : MonoBehaviour {
 				temp.SetActive(true);
 				curSpawner++;
 				WaveManager.wave++;
-				if (WaveManager.wave > 5) {
+				if (WaveManager.wave ==6) {
 					GameObject.Find ("BGM").transform.GetComponent<AudioController> ().changeToBGM2 ();
 				}
 				isStart = false;
