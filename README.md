@@ -1,23 +1,28 @@
 # TD
 Elements Defense
- 
+
 Overview
+
 Engine: Unity3D
 
-Platform: ios
+Platform: iOS
 
 Game Concept
 
-The purpose of this game is to build your own towers to protect yourself from being attacked by the creeps. There are five types of towers and five types of creeps correspondingly, each type of tower does different damage on different types of creeps. Thus, the game requires the player to come up with an optimal way to plan and build their towers on different locations in order to kill the creeps and survive from the fight.
+The purpose of this game is to build your own towers to protect yourself from being attacked by the creeps. There are five types of basic towers, five types of combined towers, and five types of creeps correspondingly, each type of basic tower has three levels and each one does different damage on these creeps. Thus, the game requires the player to come up with an optimal way to plan and build their towers on different locations in order to kill the creeps and survive from the fight. What makes our game different than other tower defense games is that we introduce Chinese element concept to our game. We can combine different elements with towers to gain new towers, making this game more interactive among towers. The player could take advantage of combining towers to get extra attack power, instead of separating each tower and using them as a single, independent tower.
 
 Target Audience
 
-This game is designed for people who like to play games with strategies, similar games including PvZ. Our game introduces traditional Chinese elements into the fight, which provides more fun to the players. Moreover, as the towers and creeps would accumulate until the end of the game, our game would be more exciting and attractive. 
+This game is designed for people who like to play games with strategies, similar games including PvZ. Our game introduces traditional Chinese elements into the fight, which provides more fun to the players.  Moreover, as the towers and creeps would accumulate and get stronger until the end of the game, our game would be more exciting and attractive. 
+
+There is another feature of our game: different from other tower defense game, you cannot only build tower and watch the game, you also need to decide which enemy you should attach first. For example, when there is a boss or an enemy with low hp but is going to leave, you should kill him first. We also have box object, we call it gift— you could attack it and after destroying it, you might get gold, tower, or even an element card. Also you get a new empty tower spot to build your new tower. 
+
 
 The best fit device of this game is on iPad, since the player could easily build defense towers by touching the screen and has a larger view of the whole game scene. Also, our character design is pretty adorable, which attracts people to play our game and is also friendly to kids.
 
 Genres
-Tower Defense, Problem-solving. Similar games are Kingdom Rush, Plants vs. Zombies, etc.
+
+Tower Defense, Strategy. Similar games are Kingdom Rush, Plants vs. Zombies, Carrot Defense, etc.
 
 
 Backstory
@@ -30,67 +35,81 @@ One day, however, lots of unexpected creepers arrived on the land continuously t
 
 In order to protect the scientists in the headquarters, the super hero Bang, who has the power of the five tribes. No one knows where Bang came from. It is said that Bang born in an explosion in the early period of land’s history. Bang need to build towers on the ways leading to the headquarters to defend the attack from creepers. All the hopes to save the beautiful land now rest on Bang. Will Bang success?!
 
-
 Objects 
-There will be four objects in our game, including  element towers, element creeps, gold, and the player.
 
-Tower
+There will be six objects in our game, including  basic tower, combined tower, element creep, element card, gift box and gold.
 
-There are five type of them, including fire, earth, metal, water and wood. The player are able to upgrade the the tower’s level. The power of the tower’s attack will increase as player upgrade the tower’s level. The player can upgrade the towers in order to kill more creeps by spending gold. Different type of the tower will have different impact on a certain type of creeps. For example, the fire tower will do more damage on the metal creep than the earth tower will do.
+Basic Tower
+
+There are five types of them, including fire, earth, metal, water and wood. The player is able to upgrade the the tower’s level. The attack power of the tower will increase as the player upgrade the tower’s level. The player can upgrade the towers in order to kill more creeps by spending the collected gold. Different types of towers will have different impact on a certain type of creeps. For example, the fire tower will do more damage on the metal creep than the earth tower will do.
+
+Combined Tower
+
+After being upgraded to level 3, each basic tower could combine with a certain element card to evolve to the combined tower; each combined tower has a new attack feature, more than the previous basic attack power. The combining rule and their new attack features are:
+
+Transfer enemies:
+Fire element combines with Earth tower
+Transfer all enemies located in the range to the starting point
+
+Slow enemies:
+Metal element combines with Water tower
+Slow down all enemies that are located in the range
+
+Copy towers:
+Water element combines with Wood tower	
+Copy the most expensive tower nearby and create a same one to an empty tower spot
+
+Faint enemies:
+Earth element combines with Metal tower
+Cause every passing by enemy faint, enemy will stop walking
+
+Attack a line’s enemies
+Wood element combines with Fire tower
+Bullets from this tower can attack all enemies that are passing by that line
+
+Element Card
+
+There are two ways to collect Element Card: Kill both of the first five waves or attack the gift box. The gift box has a small chance to drop an element card. These element cards could be used to combine with top level basic towers to get a combined tower with more attack features.
+
+Gift Box
+
+Gift box could be attacked and destroyed. After being destroyed, it could drop you gold, a tower or an element card. Most importantly, you could get a new tower spot to build towers.
 
 Creeps
 
-There are also five types of creeps, including  fire, earth, metal, water and wood. Each type of the creeps have their own strength and weakness. For example, the wood creeps will have better defence power, and the fire ones will be able to do more harm on the player. The water creeps will be able to move faster than others. The earth creeps move slower than others but can do more harm. The metal move faster but do less harm than others.
+There are also five types of creeps, including  fire, earth, metal, water and wood. For the first five wave creeps, there is a box who takes an element card for player to collect. The last five waves creeps are extremely strong and need player pay attention to take care of.
 
 Gold
 
 The need for building and upgrading any towers. Player can collect the gold by killing creeps or by some special event in the game. For example, the gold will be given to the player every 2 minutes. 
 
 
-
-
-Player
-
-There is also a character named Bang that you could control to build the tower. Bang could move regardless obstacles. Also, Bang would not be attacked by the creeps.
-
-
 Play rules
 
 The goal of the game is to build your element tower to protect yourself. There are 10 waves of creeps that would appear in order and each wave would be stronger than the earlier one. 
 
-Each player would have 50 hp. The creep would walk along the fixed route and be attacked by the tower you build. Each creep has not been killed at the end of the route would reduce your hp by 1 and the creep would still exist in the following waves. 
+Each player would have 10 hp. The creep would walk along the fixed route and be attacked by the tower you build. Each creep has not been killed at the end of the route would reduce your hp by 1 and the creep would still exist in the following waves. 
 
 Thus, to survive in the game you have to build your powerful tower with strategy. There are five elements in the game: fire, earth, metal, water and wood. Each element has overcoming and generating interaction with other elements. For example, ‘fire’ tower would make 200% damage to metal creep while it would only make 50% damage to water creep. The creeps in different waves are with different elements; so you should make decision which element tower you should build; you also need to decide the location where to build the tower to get highest efficiency. 
+Creeps
 
-You need to earn gold to build tower. There are two methods to earn gold: 1. at the end of each wave the system would conclude how many creeps have been killed and decide how much gold you could earn. The more creeps have been killed, the more gold you would earn; 2. you would also earn gold by killing each creep. 
-
-Level
-
-Level 1st: A wave of metal creeps
-Level 2nd: A wave of wood creeps
-Level 3rd: A wave of water creeps
-Level 4th: A wave of fire creeps
-Level 5th: A wave of earth creeps
-Level 6th: A wave of fire creeps and earth creeps
-Level 7th: A wave of water creeps and wood creeps
-Level 8th: A wave of wood creeps and fire creeps
-Level 9th: A wave of earth creeps and metal creeps
-Level 10th: Combination of all kinds of creeps
-
-Moreover, the hp and moving speed would increase for each new wave
+Level 1st: A wave of metal creeps with a metal Boss
+Level 2nd: A wave of wood creeps with a wood Boss
+Level 3rd: A wave of water creeps with a water Boss
+Level 4th: A wave of fire creeps with a fire Boss
+Level 5th: A wave of earth creeps with an earth Boss
+Level 1st: A wave of strong metal creeps 
+Level 2nd: A wave of strong wood creeps
+Level 3rd: A wave of strong water creeps
+Level 4th: A wave of strong fire creeps
+Level 5th: A wave of strong earth creeps
 
 
 Optional development
 
-The tower could eventually evolve to three-floor tower, the basic one-floor tower is what we plan to implement, if the project goes well and we have extra time, the second and third floor would come true.
- 
-Unlike the first floor, the second floor is to storage power, player double tap the tower to release the power, which is enhanced attack to all creeps within its attack range (it takes perhaps 15-20s to recharge the power, the attack may lasts 2-3s). Each type of tower has its unique enhanced attack, for example the water-type tower could generate flood within its range, while earth-type tower could cause ground collapse.
- 
-The magic third floor is able to connect other tower(s) to produce even more diverse and powerful attack, once two towers have power recharged, user can draw a line to connect two towers, say water-type and earth-type tower, then mud-rock flow will attack the creeps in the range. It can extend to connect three (by drawing triangle), four and up to five towers at a time. As attack range, the connection also has its range; it depends on the tower level and where you put the tower (the higher, the farther it can reach, image that it works as radio station).
- 
-Another thing in our optional list is to introduce the hero, remember we have five tribes in our game; player can pick one of the leaders of tribes as hero, each hero have unique weapons and skill, player can move the hero, the hero will automatically attack the creeps in the range. We have hero, what about boss? We can introduce different boss across a range of increasingly complex levels.
- 
-We develop the game from a simple map, and then evolve to various maps; finally we combine all maps as a whole.
+The tower could eventually evolve to more-elements-combined tower, the basic one-floor tower is what we plan to implement, if the project goes well and we have extra time. 
+
+Moreover, we could design new mode to play: challenge mode. Challenge mode has infinite waves of creeps and the goal is surviving as long as possible.
 
 
 Team member
@@ -101,5 +120,7 @@ Yuanyin Du
 Liang Zhuang
 I-Jou Wang
 Xin Wen
+
+
 
 
